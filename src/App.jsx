@@ -1,7 +1,15 @@
-import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
+import MainLayout from "./layouts/MainLayout";
 
-const App = () => {
-  return <div className="bg-amber-200 py-2 w-full text-center">App</div>;
-};
+function App() {
+  return (
+    <BrowserRouter>
+      <MainLayout>
+        <AppRoutes />
+      </MainLayout>
+    </BrowserRouter>
+  );
+}
 
 export default App;
