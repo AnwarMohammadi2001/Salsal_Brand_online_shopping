@@ -3,14 +3,25 @@ import Home from "../pages/Home";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import NotFound from "../pages/NotFound";
+import Login from "../pages/Login";
+import Dashboard from "../pages/Dashboard";
+import PrivateRoute from "../components/PrivateRoute";
 
-export default function AppRoutes() {
+export default function AppRoutes({ isAuthenticated, loginUser, logoutUser }) {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
-      {/* 404 Page */}
+      <Route path="/login" element={<Login loginUser={loginUser} />} />
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute isAuthenticated={isAuthenticated}>
+            <Dashboard logoutUser={logoutUser} />
+          </PrivateRoute>
+        }
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

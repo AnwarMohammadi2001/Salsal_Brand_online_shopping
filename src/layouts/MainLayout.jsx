@@ -1,5 +1,6 @@
 import Navbar from "./Navbar";
 import Header from "./Header";
+import Footer from "./Footer";
 
 export default function MainLayout({ children }) {
   return (
@@ -7,7 +8,7 @@ export default function MainLayout({ children }) {
       <Header />
       <Navbar />
       <main className="flex-grow">{children}</main>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
