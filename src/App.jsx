@@ -5,8 +5,8 @@ import MainLayout from "./layouts/MainLayout";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true); // NEW
 
-  // On mount, safely read from localStorage
   useEffect(() => {
     try {
       const storedAuth = localStorage.getItem("isAuthenticated");
@@ -16,10 +16,11 @@ function App() {
     } catch (error) {
       console.error("Could not access localStorage", error);
       setIsAuthenticated(false);
+    } finally {
+      setLoading(false); // done checking localStorage
     }
   }, []);
 
-  // Login: set state + persist to localStorage
   const loginUser = () => {
     setIsAuthenticated(true);
     try {
@@ -29,7 +30,6 @@ function App() {
     }
   };
 
-  // Logout: clear state + localStorage
   const logoutUser = () => {
     setIsAuthenticated(false);
     try {
@@ -38,6 +38,11 @@ function App() {
       console.error("Could not remove from localStorage", error);
     }
   };
+
+  if (loading) {
+    // While loading, you can render a spinner or nothing
+    return <div>Loading...</div>;
+  }
 
   return (
     <BrowserRouter>
