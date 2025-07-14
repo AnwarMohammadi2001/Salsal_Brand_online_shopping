@@ -4,7 +4,7 @@ import About from "../pages/About";
 import Contact from "../pages/Contact";
 import NotFound from "../pages/NotFound";
 import Login from "../pages/Login";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../components/dashboard/Dashboard";
 import PrivateRoute from "../components/PrivateRoute";
 
 export default function AppRoutes({ isAuthenticated, loginUser, logoutUser }) {
