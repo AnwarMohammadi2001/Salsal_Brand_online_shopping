@@ -5,23 +5,23 @@ const ShopNow = () => {
     <div className="min-h-[80vh]  w-full px-5 md:px-10 lg:px-12 pb-10">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 h-full w-full">
         <div className="">
-          <img src="image4.avif" alt="" className="rounded-md" />
+          <img src="img1.webp" alt="" className="rounded-md h-[600px]" />
           <div className="py-2">
-            <p className="text-xl font-semibold">SHOP WOMEN</p>
+            <p className="text-xl ">خرید لباس عروس</p>
           </div>
         </div>
         <div className="">
           {" "}
-          <img src="image5.avif" alt="" className="rounded-md" />
+          <img src="img2.jpg" alt="" className="rounded-md h-[600px] w-full" />
           <div className="py-2">
-            <p className="text-xl font-semibold">SHOP MEN</p>
+            <p className="text-xl">خرید گند افغانی</p>
           </div>
         </div>
         <div className="">
           {" "}
-          <img src="image6.avif" alt="" className="rounded-md" />
+          <img src="img3.jpg" alt="" className="rounded-md h-[600px]" />
           <div className="py-2">
-            <p className="text-xl font-semibold">SHOP ACCESSORIES</p>
+            <p className="text-xl">خرید پنجابی</p>
           </div>
         </div>
       </div>
