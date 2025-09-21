@@ -1,12 +1,33 @@
-# React + Vite
+# All Sport
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+All Sport is a modern e-commerce web application for selling all types of sports equipment. Built with React, Vite, and Tailwind CSS, this project features a responsive mega menu, smooth animations, and a clean, user-friendly interface.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Mega Menu: Multi-column dropdown menu for easy navigation across product categories.
 
-## Expanding the ESLint configuration
+Responsive Design: Works perfectly on desktop, tablet, and mobile.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+All Sports Categories: Gym, football, basketball, running, and more.
+
+Smooth Animations: Powered by Framer Motion for menu transitions.
+
+Fast Development: Built with React + Vite for instant HMR.
+
+Routing: Navigation between different pages using React Router.
+
+Tailwind CSS: Utility-first styling for modern design.
+
+## Technologies Used
+
+React – Frontend UI library.
+
+Vite – Build tool with fast refresh.
+
+Tailwind CSS – For styling and responsive layouts.
+
+Framer Motion – Smooth animations and transitions.
+
+React Router – Page routing.
+
+Additional React packages for icons, forms, and state management.

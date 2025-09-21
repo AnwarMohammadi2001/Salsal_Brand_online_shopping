@@ -1,22 +1,16 @@
-import { useLocation } from "react-router-dom";
-import Navbar from "./Navbar";
-import Header from "./Header";
-import Footer from "./Footer";
+import { Outlet } from "react-router-dom";
+import TopHeader from "../components/Navbar/TopHeader";
+import Navbar from "../components/Navbar/Navbar";
 
-export default function MainLayout({ children }) {
-  const location = useLocation();
-
-  // List of paths where you want to hide header/navbar/footer
-  const hideLayoutPaths = ["/dashboard"];
-
-  const shouldHideLayout = hideLayoutPaths.includes(location.pathname);
-
+export default function MainLayout() {
   return (
-    <div className="min-h-screen flex flex-col">
-      {!shouldHideLayout && <Header />}
-      {!shouldHideLayout && <Navbar />}
-      <main className="flex-grow">{children}</main>
-      {!shouldHideLayout && <Footer />}
+    <div className="min-h-screen flex flex-col ">
+      <TopHeader />
+      <Navbar />
+      <main className="flex-grow ">
+        <Outlet /> {/* Nested route renders here */}
+      </main>
+      {/* <Footer /> */}
     </div>
   );
 }

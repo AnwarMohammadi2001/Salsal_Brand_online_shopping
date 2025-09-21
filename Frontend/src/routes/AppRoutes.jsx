@@ -1,32 +1,28 @@
-import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home";
-import About from "../pages/About";
-import Contact from "../pages/Contact";
-import NotFound from "../pages/NotFound";
-import Login from "../pages/Login";
-import DashboardPage from "../components/dashboard/DashboardPage";
-import PrivateRoute from "../components/PrivateRoute";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
 
-export default function AppRoutes({ isAuthenticated, loginUser, logoutUser }) {
+// Layouts
+import MainLayout from "../layouts/MainLayout";
+
+import SignIn from "../feature/authentication/SignIn";
+import SignUp from "../feature/authentication/SignUp";
+
+// Lazy loaded pages
+const Home = lazy(() => import("../pages/Home"));
+
+export default function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/login" element={<Login loginUser={loginUser} />} />
-
-      {/* Protected Dashboard Route */}
-      <Route
-        path="/dashboard"
-        element={
-          <PrivateRoute isAuthenticated={isAuthenticated}>
-            <DashboardPage logoutUser={logoutUser} />
-          </PrivateRoute>
-        }
-      />
-
-      {/* 404 Not Found */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <BrowserRouter>
+      <Suspense fallback={<div className="text-center p-10">Loading...</div>}>
+        <Routes>
+          {/* Public Routes */}
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Home />} />
+          </Route>
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
 }
