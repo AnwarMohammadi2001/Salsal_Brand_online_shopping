@@ -17,59 +17,71 @@ const MenHome = () => {
   const products = [
     {
       id: 1,
-      name: "Performance Gym Pants",
-      image1: "men/image1.webp",
-      image2: "men/image2.webp",
-      sizes: ["S", "M", "L", "XL"],
+      name: "لباس افغانی گند افغانی",
+      category: "لباس افغانی",
+      image1: "prod/img1.jpeg",
+      image2: "prod/img2.jpeg",
+      price_afn: "3500 افغانی",
+      price_usd: "$40",
     },
     {
       id: 2,
-      name: "Training Shorts",
-      image1: "men/image1.webp",
-      image2: "men/image2.webp",
-      sizes: ["M", "L", "XL"],
+      name: "دامن کوتاه",
+      category: "لباس زنانه",
+      image1: "prod/img2.jpeg",
+      image2: "prod/img1.jpeg",
+      price_afn: "1800 افغانی",
+      price_usd: "$20",
     },
     {
       id: 3,
-      name: "Muscle Fit T-shirt",
-      image1: "men/image1.webp",
-      image2: "men/image2.webp",
-      sizes: ["S", "M", "L", "XL", "XXL"],
+      name: "لباس عروس",
+      category: "لباس رسمی",
+      image1: "prod/img3.jpeg",
+      image2: "prod/img4.jpeg",
+      price_afn: "15000 افغانی",
+      price_usd: "$170",
     },
     {
       id: 4,
-      name: "Hooded Sweatshirt",
-      image1: "men/image1.webp",
-      image2: "men/image2.webp",
-      sizes: ["M", "L", "XL"],
+      name: "زیورات",
+      category: "اکسسوری",
+      image1: "prod/img4.jpeg",
+      image2: "prod/img3.jpeg",
+      price_afn: "5000 افغانی",
+      price_usd: "$55",
     },
     {
       id: 5,
-      name: "Zip Hoodie",
-      image1: "men/image1.webp",
-      image2: "men/image2.webp",
-      sizes: ["S", "M", "L"],
+      name: "چپن افغانی",
+      category: "لباس سنتی",
+      image1: "prod/img5.jpeg",
+      image2: "prod/img6.jpg",
+      price_afn: "4000 افغانی",
+      price_usd: "$45",
     },
     {
       id: 6,
-      name: "Tank Top",
-      image1: "men/image1.webp",
-      image2: "men/image2.webp",
-      sizes: ["M", "L", "XL"],
+      name: "بالا تنه",
+      category: "لباس مردانه",
+      image1: "prod/img6.jpg",
+      image2: "prod/img5.jpeg",
+      price_afn: "2500 افغانی",
+      price_usd: "$28",
     },
   ];
 
   return (
     <div className="h-[85vh] w-full">
       <div className="px-5 md:px-10 lg:px-12 pt-10">
-        <h2 className="text-xl font-bold text-gray-700">Mens</h2>
+        <h2 className="text-xl  text-gray-700">محصولات</h2>
         <div className="flex items-center justify-between gap-x-5">
           <div className="flex items-center gap-x-5">
             <p className="py-3 text-2xl font-bold text-black">
-              Now live: The perfect lifter’s pants
+              حالا موجود: بهترین لباس های افغانی
             </p>
             <button className="underline text-xl font-semibold cursor-pointer hover:text-gray-700">
-              View All
+              دیدن همه
             </button>
           </div>
           <div className="flex items-center gap-x-5">
@@ -82,7 +94,7 @@ const MenHome = () => {
                   : "bg-black text-white hover:bg-gray-800 cursor-pointer"
               }`}
             >
-              <IoIosArrowBack />
+              <IoIosArrowForward />
             </button>
             <button
               ref={nextRef}
@@ -93,7 +105,7 @@ const MenHome = () => {
                   : "bg-black text-white hover:bg-gray-800 cursor-pointer"
               }`}
             >
-              <IoIosArrowForward />
+              <IoIosArrowBack />
             </button>
           </div>
         </div>

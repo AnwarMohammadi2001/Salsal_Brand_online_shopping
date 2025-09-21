@@ -5,8 +5,6 @@ import { PiHeartStraight } from "react-icons/pi";
 const HomeProductCard = ({ product }) => {
   const [hovered, setHovered] = useState(false);
 
-  // All standard sizes we want to display
-  const allSizes = ["XS","S", "M", "L", "XL", "XXL" , "3XL"];
 
   return (
     <div
@@ -23,29 +21,18 @@ const HomeProductCard = ({ product }) => {
 
       {/* Sizes Overlay */}
       <div
-        className={`absolute bottom-0 left-0 w-full bg-gray-100 text-black py-3 grid grid-cols-5 px-3  gap-1 transition-all duration-500 ${
+        className={`absolute bottom-0 left-0 w-full flex flex-col justify-center items-center bg-gray-100 h-[80px] text-black py-3 px-3  gap-1 transition-all duration-500 ${
           hovered ? "translate-y-0" : "translate-y-full"
         }`}
       >
-        {allSizes.map((size) => {
-          const isAvailable = product.sizes.includes(size);
-
-          return (
-            <span
-              key={size}
-              className={`relative px-4 py-2 flex  justify-center items-center text-black font-semibold  bg-white text-sm transition ${
-                isAvailable
-                  ? "hover:bg-black hover:text-white cursor-pointer"
-                  : "text-gray-400 border border-gray-400 cursor-not-allowed"
-              }`}
-            >
-              {size}
-              {!isAvailable && (
-                <span className="absolute left-0 right-0 top-1/2 w-full h-[1px] bg-gray-300 rotate-[-30deg]"></span>
-              )}
-            </span>
-          );
-        })}
+        <p>{product.category}</p>
+        <div className="">
+          <p>{product.price_afn}</p>
+          <p className="flex items-center gap-x-4">
+            {product.price_usd}
+            <span>دالر</span>
+          </p>
+        </div>
       </div>
       <div className="absolute top-3 right-3 bg-white text-black px-2 py-2 text-sm font-semibold rounded-full">
         <PiHeartStraight size={20} />
