@@ -61,11 +61,11 @@ const BestSeller = () => {
     },
   ];
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl px-5 mx-auto">
       <div className="px-5 flex justify-center py-5 md:px-10 lg:px-12 ">
         <h2 className="text-xl  text-gray-700">محصولات پر فروش</h2>
       </div>
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center lg:grid-cols-3 gap-5">
         {products.map((product) => (
           <HomeProductCard key={product.id} product={product} />
         ))}

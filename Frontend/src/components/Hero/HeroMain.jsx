@@ -53,7 +53,7 @@ const HeroMain = () => {
   ];
 
   return (
-    <div className="w-full h-[80vh]  md:h-[400px] lg:h-[680px] relative group">
+    <div className="w-full h-[50vh]  md:h-[400px] lg:h-[680px] relative group">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
       
@@ -139,7 +139,7 @@ const HeroMain = () => {
       </div>
 
       {/* Circular progress indicator */}
-      <div className="absolute bottom-5 left-10 z-20">
+      {/* <div className="absolute bottom-5 left-10 z-20">
         <svg className="w-14 h-14 -rotate-90">
           <circle
             className="text-gray-400"
@@ -163,7 +163,7 @@ const HeroMain = () => {
             cy="28"
           />
         </svg>
-      </div>
+      </div> */}
     </div>
   );
 };

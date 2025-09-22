@@ -73,11 +73,11 @@ const MenHome = () => {
 
   return (
     <div className="h-[85vh] w-full">
-      <div className="px-5 md:px-10 lg:px-12 pt-10">
+      <div className="px-5 md:px-10 lg:px-12 ">
         <h2 className="text-xl  text-gray-700">محصولات</h2>
         <div className="flex items-center justify-between gap-x-5">
-          <div className="flex items-center gap-x-5">
-            <p className="py-3 text-2xl font-bold text-black">
+          <div className="md:flex items-center gap-x-5">
+            <p className="py-3 text-sm md:text-base lg:text-2xl font-bold text-black">
               حالا موجود: بهترین لباس های افغانی
             </p>
             <button className="underline text-xl font-semibold cursor-pointer hover:text-gray-700">
@@ -121,8 +121,8 @@ const MenHome = () => {
         breakpoints={{
           0: {
             slidesPerView: 1.3,
-            slidesOffsetBefore: 20,
-            slidesOffsetAfter: 20,
+            slidesOffsetBefore: 10,
+            slidesOffsetAfter: 10,
           },
           768: {
             slidesPerView: 2.3,

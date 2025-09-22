@@ -6,13 +6,11 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/Logo.png";
 import { PiHeartStraight } from "react-icons/pi";
 
-
 const MobileSearchBox = ({ isExpanded, setIsExpanded }) => {
   const [inputValue, setInputValue] = useState("");
   const modalRef = useRef(null);
   const navigate = useNavigate();
 
- 
   const handleCancelClick = () => {
     setIsExpanded(false);
     setInputValue(""); // reset when closed
@@ -56,11 +54,12 @@ const MobileSearchBox = ({ isExpanded, setIsExpanded }) => {
 
   // Static suggestions only
   const popularItems = [
-    "White Sneakers",
-    "High Waist Jeans",
-    "Basic T-Shirt",
-    "Classic Shirt",
-    "Converse",
+    "لباس افغانی گند افغانی",
+    "دامن کوتاه",
+    "لباس عروس",
+    "زیورات",
+    "چپن افغانی",
+    "بالا تنه",
   ];
 
   return (
@@ -80,13 +79,13 @@ const MobileSearchBox = ({ isExpanded, setIsExpanded }) => {
               {/* Logo + Cancel (mobile) */}
               <div className="flex items-center justify-between gap-x-2 mb-3 md:mb-0">
                 <div className="flex items-center gap-x-3">
-                  <img src={Logo} alt="logo" className="w-28" />
+                  <img src='logo.png' alt="logo" className="h-12" />
                 </div>
                 <button
                   onClick={handleCancelClick}
                   className="md:hidden py-2 text-gray-800 font-semibold hover:text-gray-500 text-lg transition"
                 >
-                  Cancel
+                  لغو
                 </button>
               </div>
 
@@ -100,7 +99,7 @@ const MobileSearchBox = ({ isExpanded, setIsExpanded }) => {
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Search products, brands, tags..."
+                  placeholder="محصولات، برندها، یا دسته‌بندی‌ها را جستجو کنید..."
                   className="flex bg-transparent w-[800px] outline-none text-gray-800"
                   autoFocus
                 />
@@ -119,14 +118,14 @@ const MobileSearchBox = ({ isExpanded, setIsExpanded }) => {
                 onClick={handleCancelClick}
                 className="hidden md:block py-2 text-gray-800 font-semibold hover:text-gray-500 text-lg transition"
               >
-                Cancel
+                لغو
               </button>
             </div>
 
             {/* Popular Searches */}
             <div className="md:w-[850px] mx-auto mt-6">
               <h4 className="text-gray-500 text-md font-semibold p-4">
-                Popular Searches
+                جستجوهای پرطرفدار
               </h4>
               <ul className="flex items-center flex-wrap gap-4 mb-4 px-4">
                 {popularItems.map((item, index) => (

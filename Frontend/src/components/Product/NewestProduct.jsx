@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowForward, IoIosArrowRoundBack } from "react-icons/io";
 import HomeProductCard from "../Card/HomeProductCard";
 import { Link } from "react-router-dom";
@@ -60,13 +60,29 @@ const NewestProduct = () => {
       price_usd: "$28",
     },
   ];
+    const [visibleCount, setVisibleCount] = useState(3);
+
+    useEffect(() => {
+      const updateCount = () => {
+        if (window.innerWidth >= 1024) {
+          setVisibleCount(4); // laptop and larger
+        } else {
+          setVisibleCount(3); // mobile & tablet
+        }
+      };
+
+      updateCount(); // run on mount
+      window.addEventListener("resize", updateCount);
+
+      return () => window.removeEventListener("resize", updateCount);
+    }, []);
   return (
-    <div className="px-10">
-      <div className="px-5 flex justify-center py-5 md:px-10 lg:px-12 ">
+    <div className="px-5">
+      <div className=" flex justify-center py-5 md:px-10 lg:px-12 ">
         <h2 className="text-xl  text-gray-700"> جدیدترین محصولات </h2>
       </div>
-      <div className="grid grid-cols-4 gap-5">
-        {products.slice(0,4).map((product) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center lg:grid-cols-4 gap-5">
+        {products.slice(0, visibleCount).map((product) => (
           <HomeProductCard key={product.id} product={product} />
         ))}
       </div>

@@ -8,7 +8,7 @@ const HomeProductCard = ({ product }) => {
 
   return (
     <div
-      className="relative w-[350px] h-[440px] group cursor-pointer overflow-hidden"
+      className="relative w-[300px] h-[390px] lg:w-[350px] lg:h-[440px] group cursor-pointer overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
