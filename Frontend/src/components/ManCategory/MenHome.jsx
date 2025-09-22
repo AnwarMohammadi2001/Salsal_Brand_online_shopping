@@ -6,6 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import HomeProductCard from "../Card/HomeProductCard";
+import { Link } from "react-router-dom";
 
 const MenHome = () => {
   const prevRef = useRef(null);
@@ -80,9 +81,9 @@ const MenHome = () => {
             <p className="py-3 text-sm md:text-base lg:text-2xl font-bold text-black">
               حالا موجود: بهترین لباس های افغانی
             </p>
-            <button className="underline text-xl font-semibold cursor-pointer hover:text-gray-700">
+            <Link to="/product" className="underline text-xl font-semibold cursor-pointer hover:text-gray-700">
               دیدن همه
-            </button>
+            </Link>
           </div>
           <div className="flex items-center gap-x-5">
             <button

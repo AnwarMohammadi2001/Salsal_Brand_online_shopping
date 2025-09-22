@@ -11,9 +11,13 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.43.1",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.3.2",
     "@tailwindcss/vite": "^4.1.12",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.541.0",
+    "rc-slider": "^11.1.9",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hot-toast": "^2.6.0",

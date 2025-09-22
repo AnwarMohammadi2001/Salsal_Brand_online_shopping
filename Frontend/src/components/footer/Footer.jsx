@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   const icons = [FaFacebook, FaInstagram, FaTiktok, FaWhatsapp];
   return (
-    <div className="w-full h-auto lg:h-[450px] bg-stone-900 px-5 md:px-20">
+    <div className="w-full h-auto  bg-stone-900 px-5 md:px-20">
       <div className=" lg:grid grid-cols-5 gap-6 md:px-20 py-6 space-y-3 lg:space-y-0 ">
         {/* About Section */}
         <div className="col-span-2 flex flex-col items-center  text-center">
