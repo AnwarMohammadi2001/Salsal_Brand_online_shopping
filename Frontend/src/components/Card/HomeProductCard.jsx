@@ -29,17 +29,6 @@ const HomeProductCard = ({ product }) => {
           </p>
         </div>
       </div>
-
-      {/* Sizes Overlay */}
-      {/* <div
-        className={`absolute bottom-0 left-0 w-full flex flex-col justify-center items-center bg-gray-100 h-[70px] text-black py-3 px-3  gap-1 transition-all duration-500 ${
-          hovered ? "translate-y-0" : "translate-y-full"
-        }`}
-      >
-        <button className="w-full border border-black text-black py-2 rounded-md hover:bg-black hover:text-white hover:border-none duration-300 transition-colors">
-        افزودن به سبد خرید
-        </button>
-      </div> */}
       <div className="absolute top-3 right-3 bg-white text-black px-2 py-2 text-sm font-semibold rounded-full">
         <PiHeartStraight size={20} />
       </div>

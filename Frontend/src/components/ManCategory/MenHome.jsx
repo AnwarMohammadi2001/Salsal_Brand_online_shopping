@@ -81,7 +81,10 @@ const MenHome = () => {
             <p className="py-3 text-sm md:text-base lg:text-2xl font-bold text-black">
               حالا موجود: بهترین لباس های افغانی
             </p>
-            <Link to="/product" className="underline text-xl font-semibold cursor-pointer hover:text-gray-700">
+            <Link
+              to="/collections"
+              className="underline text-xl font-semibold cursor-pointer hover:text-gray-700"
+            >
               دیدن همه
             </Link>
           </div>

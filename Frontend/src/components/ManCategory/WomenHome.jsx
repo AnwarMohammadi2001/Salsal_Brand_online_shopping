@@ -6,6 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import HomeProductCard from "../Card/HomeProductCard";
+import HomeProductCardSkeleton from "../Card/HomeProductCardSkeleton";
 
 const WomenHome = () => {
   const prevRef = useRef(null);
@@ -99,11 +100,10 @@ const WomenHome = () => {
         </div>
       </div>
 
- 
       <Swiper
         modules={[Navigation]}
         spaceBetween={0}
-        slidesPerView={4.3} 
+        slidesPerView={4.3}
         slidesOffsetBefore={40}
         slidesOffsetAfter={30}
         breakpoints={{
@@ -137,7 +137,13 @@ const WomenHome = () => {
       >
         {products.map((product) => (
           <SwiperSlide key={product.id}>
-            <HomeProductCard product={product} />
+            {products.map((product, index) =>
+              loading ? (
+                <HomeProductCardSkeleton key={index} />
+              ) : (
+                <HomeProductCard key={index} product={product} />
+              )
+            )}
           </SwiperSlide>
         ))}
       </Swiper>

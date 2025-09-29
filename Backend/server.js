@@ -1,64 +1,47 @@
-const express = require("express");
-const cors = require("cors");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cors from "cors";
+
+import authRoutes from "./routes/auth.js";
+import projectRoutes from "./routes/projectRoutes.js";
+import aboutRoutes from "./routes/about.js";
+import contactRoutes from "./routes/contactRoutes.js";
+import marqueeRoutes from "./routes/marqueeRoutes.js";
+
+dotenv.config();
 
 const app = express();
-const PORT = 5000;
-const JWT_SECRET = "your_secret_key"; // Change this!
 
-app.use(cors());
+// Enable CORS (frontend running separately)
+app.use(
+  cors({
+    origin: "http://localhost:5173", // your React dev server
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
-// Dummy user data - replace with real DB in production
-const users = [
-  {
-    id: 1,
-    email: "admin@gmail.com",
-    // Password hash for "open"
-    passwordHash:
-      "$2a$10$FqIklD5Q7Zn8cFuz0OYmkONoLf7kY8K7ZjDhO8HpcpqIN27IpED3m",
-  },
-];
+// API Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/about", aboutRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/marquee", marqueeRoutes);
 
-// Login endpoint
-app.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
+// Serve uploaded files
+app.use("/uploads", express.static("uploads"));
 
-  const user = users.find((u) => u.email === email);
-  if (!user) return res.status(401).json({ message: "Invalid credentials" });
+// No React build serving in dev, so remove the catch-all
+// app.use(express.static(path.join(__dirname, "client", "build")));
+// app.get("*", ...)
 
-  const validPassword = await bcrypt.compare(password, user.passwordHash);
-  if (!validPassword)
-    return res.status(401).json({ message: "Invalid credentials" });
+// Connect MongoDB
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error("❌ MongoDB Connection Failed:", err));
 
-  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-    expiresIn: "1h",
-  });
-
-  res.json({ token });
-});
-
-// Middleware to protect routes
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-  if (!token) return res.sendStatus(401);
-
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-}
-
-// Protected route example
-app.get("/api/dashboard-data", authenticateToken, (req, res) => {
-  res.json({
-    message: `Hello ${req.user.email}, this is your dashboard data.`,
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

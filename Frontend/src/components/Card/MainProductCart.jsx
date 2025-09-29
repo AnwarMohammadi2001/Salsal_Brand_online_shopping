@@ -1,17 +1,30 @@
-import { Heart } from "lucide-react";
 import React, { useState } from "react";
 import { PiHeartStraight } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
 
 const MainProductCart = ({ product }) => {
   const [hovered, setHovered] = useState(false);
+  const navigate = useNavigate();
+
+  const slugify = (text) =>
+    text
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w-]+/g, "");
+
+  const handleClick = () => {
+    navigate(
+      `/collections/${slugify(product.category)}/${slugify(product.name)}`
+    );
+  };
 
   return (
     <div
-      className="relative w-[300px] h-[390px] lg:w-[284px] lg:h-[440px]  group cursor-pointer overflow-hidden"
+      onClick={handleClick}
+      className="relative w-[300px] h-[390px] lg:w-[284px] lg:h-[440px] group cursor-pointer overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Images */}
       <img
         src={hovered ? product.image2 : product.image1}
         alt={product.name}
@@ -28,17 +41,6 @@ const MainProductCart = ({ product }) => {
           </p>
         </div>
       </div>
-
-      {/* Sizes Overlay */}
-      {/* <div
-        className={`absolute bottom-0 left-0 w-full flex flex-col justify-center items-center bg-gray-100 h-[70px] text-black py-3 px-3  gap-1 transition-all duration-500 ${
-          hovered ? "translate-y-0" : "translate-y-full"
-        }`}
-      >
-        <button className="w-full border border-black text-black py-2 rounded-md hover:bg-black hover:text-white hover:border-none duration-300 transition-colors">
-        افزودن به سبد خرید
-        </button>
-      </div> */}
       <div className="absolute top-3 right-3 bg-white text-black px-2 py-2 text-sm font-semibold rounded-full">
         <PiHeartStraight size={20} />
       </div>

@@ -13,6 +13,15 @@ const MainSideBarPage = () => {
   const [afnRange, setAfnRange] = useState([0, 1000]);
   const [usdRange, setUsdRange] = useState([0, Math.floor(1000 / USD_TO_AFN)]);
 
+  // State for other filters
+  const [selectedFilters, setSelectedFilters] = useState({
+    category: [],
+    color: [],
+    size: [],
+    new: [],
+    mostSales: [],
+  });
+
   const filters = [
     {
       key: "category",
@@ -50,7 +59,6 @@ const MainSideBarPage = () => {
     setOpenFilter(openFilter === key ? null : key);
   };
 
-  // Handle AFN change
   const handleAfnChange = (values) => {
     setAfnRange(values);
     setUsdRange([
@@ -59,20 +67,67 @@ const MainSideBarPage = () => {
     ]);
   };
 
-  // Handle USD change
   const handleUsdChange = (values) => {
     setUsdRange(values);
     setAfnRange([values[0] * USD_TO_AFN, values[1] * USD_TO_AFN]);
   };
 
+  // Handle checkbox selection
+  const handleCheckboxChange = (filterKey, option) => {
+    setSelectedFilters((prev) => {
+      const newSelection = prev[filterKey].includes(option)
+        ? prev[filterKey].filter((o) => o !== option)
+        : [...prev[filterKey], option];
+      return { ...prev, [filterKey]: newSelection };
+    });
+  };
+
+  // Handle size button click
+  const handleSizeClick = (size) => {
+    setSelectedFilters((prev) => {
+      const newSelection = prev.size.includes(size)
+        ? prev.size.filter((s) => s !== size)
+        : [...prev.size, size];
+      return { ...prev, size: newSelection };
+    });
+  };
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    setSelectedFilters({
+      category: [],
+      color: [],
+      size: [],
+      new: [],
+      mostSales: [],
+    });
+    setAfnRange([0, 1000]);
+    setUsdRange([0, Math.floor(1000 / USD_TO_AFN)]);
+  };
+
+  // Check if any filter is active
+  const isAnyFilterActive =
+    Object.values(selectedFilters).some((arr) => arr.length > 0) ||
+    afnRange[0] !== 0 ||
+    afnRange[1] !== 1000;
+
   return (
-    <aside className="bg-white ">
-      <div className="flex items-center justify-between py-2 px-2"></div>
-      <div className=" border-gray-200 h-fit w-full space-y-2 p-4 rounded-md">
+    <aside className="bg-white p-2">
+      <div className="flex items-center justify-between py-2 px-2">
+        <p>فیلتر و مرتب‌سازی</p>
+        {isAnyFilterActive && (
+          <button onClick={clearAllFilters}>
+            <span className="text-blue-600 text-sm cursor-pointer hover:underline">
+              پاک کردن همه
+            </span>
+          </button>
+        )}
+      </div>
+
+      <div className="border-gray-200 h-fit w-full space-y-2 p-4 rounded-md">
         {/* قیمت - همیشه باز */}
         <div className="border-b border-gray-200 pb-4">
           <h3 className="font-semibold text-gray-800 mb-3">قیمت</h3>
-          {/* قیمت به افغانی */}
           <PriceSlider
             min={0}
             max={1000}
@@ -81,8 +136,6 @@ const MainSideBarPage = () => {
             label="بر اساس افغانی"
             unit="؋"
           />
-
-          {/* قیمت به دالر */}
           <PriceSlider
             min={0}
             max={100}
@@ -95,7 +148,6 @@ const MainSideBarPage = () => {
 
         {filters.map((filter) => (
           <div key={filter.key} className="border-b border-gray-200 pb-2">
-            {/* Header */}
             <button
               onClick={() => toggleFilter(filter.key)}
               className="w-full flex justify-between items-center py-2 text-right font-semibold text-gray-700 hover:text-blue-600 transition-colors"
@@ -108,7 +160,6 @@ const MainSideBarPage = () => {
               )}
             </button>
 
-            {/* Body */}
             <AnimatePresence>
               {openFilter === filter.key && (
                 <motion.div
@@ -125,7 +176,16 @@ const MainSideBarPage = () => {
                           key={option}
                           className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-blue-500 transition-colors"
                         >
-                          <input type="checkbox" className="accent-blue-600" />
+                          <input
+                            type="checkbox"
+                            className="accent-blue-600"
+                            checked={selectedFilters[filter.key].includes(
+                              option
+                            )}
+                            onChange={() =>
+                              handleCheckboxChange(filter.key, option)
+                            }
+                          />
                           {option}
                         </label>
                       ))}
@@ -135,8 +195,13 @@ const MainSideBarPage = () => {
                         {filter.options.map((color) => (
                           <li
                             key={color}
-                            className="w-6 h-6 rounded-full border cursor-pointer"
+                            className={`w-6 h-6 rounded-full border cursor-pointer ${
+                              selectedFilters.color.includes(color)
+                                ? "ring-2 ring-blue-500"
+                                : ""
+                            }`}
                             style={{ backgroundColor: color }}
+                            onClick={() => handleCheckboxChange("color", color)}
                           ></li>
                         ))}
                       </ul>
@@ -147,7 +212,12 @@ const MainSideBarPage = () => {
                         {filter.options.map((size) => (
                           <span
                             key={size}
-                            className="px-3 py-1 border rounded-md cursor-pointer hover:bg-blue-50"
+                            className={`px-3 py-1 border rounded-md cursor-pointer hover:bg-blue-50 ${
+                              selectedFilters.size.includes(size)
+                                ? "bg-blue-100 border-blue-500"
+                                : ""
+                            }`}
+                            onClick={() => handleSizeClick(size)}
                           >
                             {size}
                           </span>
