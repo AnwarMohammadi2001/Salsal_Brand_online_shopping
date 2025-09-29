@@ -68,7 +68,7 @@ const MainSideBarPage = () => {
   return (
     <aside className="bg-white ">
       <div className="flex items-center justify-between py-2 px-2"></div>
-      <div className="border border-gray-200 h-fit w-full space-y-2 p-4 rounded-md">
+      <div className=" border-gray-200 h-fit w-full space-y-2 p-4 rounded-md">
         {/* قیمت - همیشه باز */}
         <div className="border-b border-gray-200 pb-4">
           <h3 className="font-semibold text-gray-800 mb-3">قیمت</h3>

@@ -2,13 +2,12 @@ import { Heart } from "lucide-react";
 import React, { useState } from "react";
 import { PiHeartStraight } from "react-icons/pi";
 
-const HomeProductCard = ({ product }) => {
+const MainProductCart = ({ product }) => {
   const [hovered, setHovered] = useState(false);
-
 
   return (
     <div
-      className="relative w-[300px] h-[390px] lg:w-[350px] lg:h-[520px] group cursor-pointer overflow-hidden"
+      className="relative w-[300px] h-[390px] lg:w-[284px] lg:h-[440px]  group cursor-pointer overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -16,7 +15,7 @@ const HomeProductCard = ({ product }) => {
       <img
         src={hovered ? product.image2 : product.image1}
         alt={product.name}
-        className="w-full h-[430px] object-cover transition-all duration-500"
+        className="w-full h-[350px] object-cover transition-all duration-500"
       />
       <div className="py-3 px-3 flex text-gray-700 text-sm flex-col gap-1">
         <p>{product.category}</p>
@@ -47,4 +46,4 @@ const HomeProductCard = ({ product }) => {
   );
 };
 
-export default HomeProductCard;
+export default MainProductCart;
