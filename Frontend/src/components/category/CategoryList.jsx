@@ -21,7 +21,7 @@ const CategoryList = () => {
           </Link>
         </div>
 
-        {/* First Row */}
+
         <div className="grid grid-cols-4 gap-1 md:gap-5 h-[150px] md:h-[250px] lg:h-[300px]">
           <div className="col-span-2 relative rounded-md overflow-hidden">
             <img
@@ -55,7 +55,7 @@ const CategoryList = () => {
           </div>
         </div>
 
-        {/* Second Row (reversed) */}
+
         <div className="grid grid-cols-4 gap-1 md:gap-5 h-[150px] md:h-[250px] lg:h-[300px] mt-5">
           <div className="col-span-1 relative rounded-md overflow-hidden">
             <img

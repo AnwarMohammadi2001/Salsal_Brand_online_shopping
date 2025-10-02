@@ -47,7 +47,7 @@ const NavLinks = () => {
           onMouseEnter={() => setHovered(link.name)}
           onMouseLeave={() => setHovered("")}
         >
-          {/* Top nav item */}
+   
           <h1
             className={`py-2 px-2  text-base transition-colors cursor-pointer relative rounded-md 
               ${
