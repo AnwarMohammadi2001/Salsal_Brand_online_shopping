@@ -1,10 +1,10 @@
-// ProductMainPage.jsx
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import MainSideBarPage from "./MainSideBarPage";
 import Breadcrumb from "../Breadcrumb";
 import MainProductCart from "../Card/MainProductCart";
 import MainProductCartSkeleton from "../Card/MainProductCartSkeleton";
 
+// 👇 Example data placeholder
 const allProducts = [
   {
     id: 1,
@@ -255,61 +255,39 @@ const ProductMainPage = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const loader = useRef(null);
 
   const PRODUCTS_PER_PAGE = 4;
-  const SCROLL_TRIGGER_COUNT = 20;
 
+  // Load more manually
   const loadMore = () => {
-    const nextProducts = allProducts.slice(
-      (page - 1) * PRODUCTS_PER_PAGE,
-      page * PRODUCTS_PER_PAGE
-    );
-    setProducts((prev) => [...prev, ...nextProducts]);
+    const nextProducts = allProducts.slice(0, (page + 1) * PRODUCTS_PER_PAGE);
+    setProducts(nextProducts);
     setPage((prev) => prev + 1);
   };
 
-  const loadAll = () => setProducts(allProducts);
+  // Load all
+  const loadAll = () => {
+    setProducts(allProducts);
+  };
 
+  // Load first page on mount
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (
-          entries[0].isIntersecting &&
-          !loading &&
-          products.length < SCROLL_TRIGGER_COUNT
-        ) {
-          setLoading(true);
-        }
-      },
-      { threshold: 1 }
-    );
-
-    if (loader.current) observer.observe(loader.current);
-    return () => {
-      if (loader.current) observer.unobserve(loader.current);
-    };
-  }, [loading, products]);
-
-  useEffect(() => {
-    if (loading) {
-      loadMore();
-      setLoading(false);
-    }
-  }, [loading]);
-
-  useEffect(() => loadMore(), []);
+    const initialProducts = allProducts.slice(0, PRODUCTS_PER_PAGE);
+    setProducts(initialProducts);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Breadcrumb />
       <main className="flex gap-6 px-6 py-6">
+        {/* Sidebar */}
         <div className="w-72">
           <div className="sticky top-[90px]">
             <MainSideBarPage />
           </div>
         </div>
 
+        {/* Product list */}
         <section className="flex-1">
           <h2 className="text-xl font-semibold mb-4">لیست محصولات</h2>
 
@@ -323,30 +301,23 @@ const ProductMainPage = () => {
                 ))}
           </div>
 
-          <div
-            ref={loader}
-            className="h-12 flex justify-center items-center mt-4"
-          >
-            {loading && <p>در حال بارگذاری...</p>}
-          </div>
-
-          {products.length >= SCROLL_TRIGGER_COUNT &&
-            products.length < allProducts.length && (
-              <div className="flex gap-4 mt-6 justify-center">
-                <button
-                  className="border rounded-full text-black border-black px-4 py-2 cursor-pointer"
-                  onClick={loadMore}
-                >
-                  بارگذاری بیشتر
-                </button>
-                <button
-                  className="border rounded-full text-black border-black px-4 py-2 cursor-pointer"
-                  onClick={loadAll}
-                >
-                  بارگذاری همه
-                </button>
-              </div>
-            )}
+          {/* Manual buttons */}
+          {products.length < allProducts.length && (
+            <div className="flex gap-4 mt-6 justify-center">
+              <button
+                className="border rounded-full text-black border-black px-4 py-2 cursor-pointer"
+                onClick={loadMore}
+              >
+                بارگذاری بیشتر
+              </button>
+              <button
+                className="border rounded-full text-black border-black px-4 py-2 cursor-pointer"
+                onClick={loadAll}
+              >
+                بارگذاری همه
+              </button>
+            </div>
+          )}
         </section>
       </main>
     </div>
