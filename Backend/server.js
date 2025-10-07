@@ -4,10 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 import authRoutes from "./routes/auth.js";
-import projectRoutes from "./routes/projectRoutes.js";
-import aboutRoutes from "./routes/about.js";
-import contactRoutes from "./routes/contactRoutes.js";
-import marqueeRoutes from "./routes/marqueeRoutes.js";
+
 
 dotenv.config();
 
@@ -25,10 +22,7 @@ app.use(express.json());
 
 // API Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/projects", projectRoutes);
-app.use("/api/about", aboutRoutes);
-app.use("/api/contact", contactRoutes);
-app.use("/api/marquee", marqueeRoutes);
+
 
 // Serve uploaded files
 app.use("/uploads", express.static("uploads"));
