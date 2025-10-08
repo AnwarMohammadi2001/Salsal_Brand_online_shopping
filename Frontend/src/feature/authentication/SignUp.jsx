@@ -27,9 +27,18 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const resultAction = await dispatch(register(formData));
-    if (register.fulfilled.match(resultAction)) {
-      navigate("/signin"); // Redirect to login after successful signup
+    const payload = {
+      username: `${formData.firstName} ${formData.lastName}`,
+      email: formData.email,
+      password: formData.password,
+    };
+    try {
+      const resultAction = await dispatch(register(payload));
+      if (register.fulfilled.match(resultAction)) {
+        navigate("/signin");
+      }
+    } catch (err) {
+      console.error("Registration error:", err);
     }
   };
 

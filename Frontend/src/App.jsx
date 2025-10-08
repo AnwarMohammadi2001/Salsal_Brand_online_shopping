@@ -1,11 +1,23 @@
 import { Toaster } from "react-hot-toast";
 import AppRoutes from "./routes/AppRoutes";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <>
-      <Toaster />
       <AppRoutes />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 }

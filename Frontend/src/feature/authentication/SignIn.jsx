@@ -1,31 +1,58 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/slices/authSlice";
 
 const SignIn = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loading, error, user } = useSelector((state) => state.auth);
+
+  // Update form data
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Submit login
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const resultAction = await dispatch(login(formData));
+    if (login.fulfilled.match(resultAction)) {
+      navigate("/"); // Redirect after successful login
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
-      {/* Logo */}
       <img src="logo.png" alt="All Sport Logo" className="h-16 mb-6" />
-
-      {/* Heading */}
       <h2 className="text-lg font-bold text-center">ورود به حساب کاربری</h2>
       <p className="text-gray-600 text-sm mt-2 text-center max-w-sm">
         لباس‌های مورد علاقه خود را خرید کنید، محصولات مورد علاقه خود را در لیست
         دلخواه ذخیره کنید، سفارش‌های خود را پیگیری کنید و با ما تمرین کنید.
       </p>
 
-      {/* Form */}
-      <form className="w-full max-w-sm mt-6 space-y-6">
+      {/* Error message */}
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+
+      <form
+        className="w-full max-w-sm mt-6 space-y-6"
+        dir="rtl"
+        onSubmit={handleSubmit}
+      >
         {/* Email */}
         <div className="relative">
           <input
             type="email"
-            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
             placeholder=" "
             className="peer w-full border-2 rounded-md px-4 py-4 focus:bg-white focus:outline-none focus:ring-1 focus:ring-black"
           />
@@ -43,7 +70,9 @@ const SignIn = () => {
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
-            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             placeholder=" "
             className="peer w-full border-2 rounded-md px-4 py-4 focus:bg-white focus:outline-none focus:ring-1 focus:ring-black"
           />
@@ -64,31 +93,26 @@ const SignIn = () => {
           </button>
         </div>
 
-        {/* Forgot Password */}
         <div className="text-right">
-          <a
-            href="#"
-            className="text-sm text-black font-medium hover:underline"
-          >
+          <a href="#" className="text-sm text-black font-medium hover:underline">
             فراموشی رمز عبور؟
           </a>
         </div>
 
-        {/* Login Button */}
+        {/* Login button */}
         <button
           type="submit"
-          className="w-full bg-black cursor-pointer hover:scale-103 text-white font-bold py-3 rounded-full hover:bg-gray-900 transition-all duration-300"
+          disabled={loading}
+          className="w-full bg-black text-white font-bold py-3 rounded-full hover:bg-gray-900 transition-all duration-300"
         >
-          ورود
+          {loading ? "در حال ورود..." : "ورود"}
         </button>
       </form>
 
-      {/* Signup Link */}
       <p className="text-sm text-gray-600 mt-6">
         حساب کاربری ندارید؟{" "}
         <span
           onClick={() => navigate("/signup")}
-          to="signup"
           className="font-medium text-black hover:underline cursor-pointer"
         >
           ثبت نام

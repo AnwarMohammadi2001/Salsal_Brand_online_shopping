@@ -21,9 +21,20 @@ export const register = async (req, res) => {
       password: hashedPassword,
     });
 
-    res.status(201).json({ message: "User registered successfully", user });
+    // Remove password before sending response
+    const { password: _, ...safeUser } = user._doc;
+
+    res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      user: safeUser,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Server error, please try again later",
+      error: error.message,
+    });
   }
 };
 
@@ -44,17 +55,19 @@ export const login = async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    const { password: _, ...safeUser } = user._doc;
+
     res.status(200).json({
+      success: true,
       message: "Login successful",
       token,
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        isAdmin: user.isAdmin,
-      },
+      user: safeUser,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Server error, please try again later",
+      error: error.message,
+    });
   }
 };

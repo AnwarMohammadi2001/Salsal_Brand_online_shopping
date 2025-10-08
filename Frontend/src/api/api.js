@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create a centralized Axios instance
 const api = axios.create({
-  baseURL: process.env.BASE_URL, // React env variable
+  baseURL: import.meta.env.VITE_BASE_URL, // ✅ use Vite syntax
   headers: {
     "Content-Type": "application/json",
   },
