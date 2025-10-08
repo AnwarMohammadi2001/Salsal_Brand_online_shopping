@@ -24,8 +24,16 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const resultAction = await dispatch(login(formData));
+
     if (login.fulfilled.match(resultAction)) {
-      navigate("/"); // Redirect after successful login
+      const loggedUser = resultAction.payload.user;
+
+      // Redirect based on role
+      if (loggedUser.isAdmin) {
+        navigate("/dashboard");
+      } else {
+        navigate("/");
+      }
     }
   };
 
@@ -94,7 +102,10 @@ const SignIn = () => {
         </div>
 
         <div className="text-right">
-          <a href="#" className="text-sm text-black font-medium hover:underline">
+          <a
+            href="#"
+            className="text-sm text-black font-medium hover:underline"
+          >
             فراموشی رمز عبور؟
           </a>
         </div>

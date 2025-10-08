@@ -1,16 +1,13 @@
+import Dashboard from "../components/dashboard/DashboardPage"; 
+import ProtectedRoute from "./ProtectedRoute";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
-
-// Layouts
-import MainLayout from "../layouts/MainLayout";
-
+import { Suspense } from "react";
+import MainLayout from "../layouts/MainLayout"
+import Home from "../pages/Home";
 import SignIn from "../feature/authentication/SignIn";
 import SignUp from "../feature/authentication/SignUp";
+import ProductDetailsPage from "../components/Product/ProductDetailsPage"
 import ProductMainPage from "../components/Product/ProductMainPage";
-import ProductDetailsPage from "../components/Product/ProductDetailsPage";
-
-// Lazy loaded pages
-const Home = lazy(() => import("../pages/Home"));
 
 export default function AppRoutes() {
   return (
@@ -26,8 +23,19 @@ export default function AppRoutes() {
               element={<ProductDetailsPage />}
             />
           </Route>
+
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Suspense>
     </BrowserRouter>

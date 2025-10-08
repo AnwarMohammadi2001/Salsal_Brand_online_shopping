@@ -27,6 +27,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.8.1",
     "react-toastify": "^11.0.5",
+    "sweetalert2": "^11.24.1",
     "swiper": "^11.2.10",
     "tailwindcss": "^4.1.12"
   },
