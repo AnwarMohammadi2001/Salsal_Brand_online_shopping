@@ -26,7 +26,7 @@ const createSuperAdmin = async () => {
 
     // Create new super admin
     const admin = new User({
-      username: "SuperAdmin",
+      username: "Admin",
       email: "admin@salsal.com",
       password: hashedPassword,
       isAdmin: true,

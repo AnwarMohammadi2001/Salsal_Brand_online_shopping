@@ -8,6 +8,11 @@ import {
   MdMessage,
   MdBuild,
   MdLogout,
+  MdShoppingCart,
+  MdAddBox,
+  MdViewList,
+  MdCategory,
+  MdImage,
 } from "react-icons/md";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { logout } from "../../redux/slices/authSlice";
@@ -25,22 +30,74 @@ const Sidebar = ({ activeComponent, setActiveComponent }) => {
   };
 
   const allMenuItems = [
+    // ---------------- Admin Menu ----------------
     {
-      name: "Dashboard",
+      name: "داشبورد",
       value: "dashboard",
       icon: <MdDashboardCustomize />,
-      adminOnly: false,
+      adminOnly: true,
     },
-    { name: "Projects", value: "projects", icon: <MdWork />, adminOnly: false },
     {
-      name: "Manage Users",
+      name: "سفارشات",
+      value: "orders",
+      icon: <MdShoppingCart />,
+      adminOnly: true,
+    },
+    {
+      name: "مدیریت کاربران",
       value: "manageUsers",
       icon: <MdPerson />,
       adminOnly: true,
     },
-    { name: "Profile", value: "profile", icon: <MdPerson />, userOnly: true },
-    { name: "Orders", value: "orders", icon: <MdInfo />, userOnly: true },
-    { name: "Logout", value: "logout", icon: <MdLogout /> },
+    {
+      name: "افزودن محصول",
+      value: "addProduct",
+      icon: <MdAddBox />,
+      adminOnly: true,
+    },
+    {
+      name: "لیست محصولات",
+      value: "productList",
+      icon: <MdViewList />,
+      adminOnly: true,
+    },
+    {
+      name: "افزودن دسته‌بندی",
+      value: "addCategory",
+      icon: <MdCategory />,
+      adminOnly: true,
+    },
+    {
+      name: "افزودن ویژگی‌ها",
+      value: "addAttributes",
+      icon: <MdBuild />,
+      adminOnly: true,
+    },
+    {
+      name: "مدیریت وب‌سایت",
+      value: "website",
+      icon: <MdImage />,
+      adminOnly: true,
+    },
+
+    // ---------------- Normal User Menu ----------------
+    {
+      name: "پروفایل",
+      value: "profile",
+      icon: <MdPerson />,
+      userOnly: true,
+    },
+    {
+      name: "سفارشات من",
+      value: "myOrders",
+      icon: <MdShoppingCart />,
+      userOnly: true,
+    },
+    {
+      name: "خروج",
+      value: "logout",
+      icon: <MdLogout />,
+    },
   ];
 
   const accessibleComponents = allMenuItems.filter((item) => {
@@ -92,7 +149,7 @@ const Sidebar = ({ activeComponent, setActiveComponent }) => {
                 className={`flex items-center gap-x-3 w-full px-4 py-3 rounded-md transition-all duration-300
                   ${
                     activeComponent === component.value
-                      ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-blue-400 border-l-4 border-blue-600"
+                      ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-blue-400 border-r-4 border-blue-600"
                       : "hover:bg-gray-200 dark:hover:bg-gray-700 text-black dark:text-gray-200"
                   }`}
               >
