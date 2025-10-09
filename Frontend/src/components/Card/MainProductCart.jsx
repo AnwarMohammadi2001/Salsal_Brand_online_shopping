@@ -14,9 +14,17 @@ const MainProductCart = ({ product }) => {
 
   const handleClick = () => {
     navigate(
-      `/collections/${slugify(product.category)}/${slugify(product.name)}`
+      `/collections/${slugify(
+        product.category.name || product.category
+      )}/${slugify(product.name)}`
     );
   };
+
+  // Use frontImage and backImage directly
+  const FRONT_IMAGE_URL = `http://localhost:5000/${product.frontImage}`;
+  const BACK_IMAGE_URL = product.backImage
+    ? `http://localhost:5000/${product.backImage}`
+    : FRONT_IMAGE_URL;
 
   return (
     <div
@@ -26,18 +34,18 @@ const MainProductCart = ({ product }) => {
       onMouseLeave={() => setHovered(false)}
     >
       <img
-        src={hovered ? product.image2 : product.image1}
+        src={hovered ? BACK_IMAGE_URL : FRONT_IMAGE_URL}
         alt={product.name}
         className="w-full h-[350px] object-cover transition-all duration-500"
       />
+
       <div className="py-3 px-3 flex text-gray-700 text-sm flex-col gap-1">
-        <p>{product.category}</p>
+        <p>{product.category.name || product.category}</p>
         <p>{product.name}</p>
         <div className="flex justify-between items-center">
-          <p>{product.price_afn}</p>
-          <p className="flex items-center gap-x-4">
-            {product.price_usd}
-            <span>دالر</span>
+          <p>{product.priceAFN} افغانی</p>
+          <p className="flex items-center gap-x-2">
+            {product.priceUSD} <span>دالر</span>
           </p>
         </div>
       </div>
