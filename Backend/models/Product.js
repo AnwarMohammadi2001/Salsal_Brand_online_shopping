@@ -15,7 +15,12 @@ const productSchema = new mongoose.Schema(
     material: { type: String },
     details: { type: String },
     sellerNote: { type: String },
-    images: [{ type: String }], // مسیر فایل‌ها
+
+    // Updated image fields
+    frontImage: { type: String, required: true }, // Single front image
+    backImage: { type: String }, // Single back image
+    otherImages: [{ type: String }], // Multiple additional images
+
     attributes: [
       {
         attributeId: { type: mongoose.Schema.Types.ObjectId, ref: "Attribute" },

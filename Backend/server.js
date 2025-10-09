@@ -18,7 +18,7 @@ const app = express();
 // Enable CORS for frontend
 app.use(
   cors({
-    origin: "http://localhost:5173", // آدرس فرانت‌اند
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -37,9 +37,9 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/attributes", attributeRoutes);
 app.use("/api/products", productRoutes);
 
-// Catch-all route (برای production React build)
+// ✅ Catch-all route (for React production build)
 app.use(express.static(path.join(process.cwd(), "client", "build")));
-app.get("*", (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.join(process.cwd(), "client", "build", "index.html"));
 });
 
@@ -50,4 +50,4 @@ mongoose
   .catch((err) => console.error("❌ MongoDB Connection Failed:", err));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

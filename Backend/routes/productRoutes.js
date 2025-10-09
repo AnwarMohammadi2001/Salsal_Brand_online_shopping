@@ -17,19 +17,39 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
   filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
 });
+
 const upload = multer({ storage });
 
 // Routes
 router.get("/", getProducts);
 router.get("/:id", getProductById);
-router.post("/", protect, adminOnly, upload.array("images", 5), addProduct);
+
+// POST route with multiple named image fields
+router.post(
+  "/",
+  protect,
+  adminOnly,
+  upload.fields([
+    { name: "frontImage", maxCount: 1 },
+    { name: "backImage", maxCount: 1 },
+    { name: "otherImages", maxCount: 10 },
+  ]),
+  addProduct
+);
+
+// PUT route with multiple named image fields
 router.put(
   "/:id",
   protect,
   adminOnly,
-  upload.array("images", 5),
+  upload.fields([
+    { name: "frontImage", maxCount: 1 },
+    { name: "backImage", maxCount: 1 },
+    { name: "otherImages", maxCount: 10 },
+  ]),
   updateProduct
 );
+
 router.delete("/:id", protect, adminOnly, deleteProduct);
 
 export default router;

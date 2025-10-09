@@ -10,7 +10,7 @@ const attributeSchema = new mongoose.Schema(
     name: { type: String, required: true },
     type: {
       type: String,
-      enum: ["text", "number", "checkbox", "date"],
+      enum: ["input", "dropdown", "date", "checkbox"], // ✅ updated types
       required: true,
     },
     required: { type: Boolean, default: false },
