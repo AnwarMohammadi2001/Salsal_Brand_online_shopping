@@ -7,7 +7,6 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/productController.js";
-
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -24,7 +23,7 @@ const upload = multer({ storage });
 router.get("/", getProducts);
 router.get("/:id", getProductById);
 
-// POST route with multiple named image fields
+// ✅ POST route - Add Product
 router.post(
   "/",
   protect,
@@ -37,7 +36,7 @@ router.post(
   addProduct
 );
 
-// PUT route with multiple named image fields
+// ✅ PUT route - Update Product
 router.put(
   "/:id",
   protect,
@@ -50,6 +49,7 @@ router.put(
   updateProduct
 );
 
+// ✅ DELETE route - Delete Product
 router.delete("/:id", protect, adminOnly, deleteProduct);
 
 export default router;

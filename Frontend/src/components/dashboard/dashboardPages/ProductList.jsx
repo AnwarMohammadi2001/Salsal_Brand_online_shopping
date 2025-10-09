@@ -186,7 +186,6 @@ const ProductList = () => {
               )}
             <div className="flex gap-4">
               {selectedProduct.otherImages &&
-                selectedProduct.otherImages.length > 0 &&
                 selectedProduct.otherImages.map((img, idx) => (
                   <img
                     key={idx}

@@ -61,18 +61,7 @@ const Sidebar = ({ activeComponent, setActiveComponent }) => {
       icon: <MdViewList />,
       adminOnly: true,
     },
-    {
-      name: "افزودن دسته‌بندی",
-      value: "addCategory",
-      icon: <MdCategory />,
-      adminOnly: true,
-    },
-    {
-      name: "افزودن ویژگی‌ها",
-      value: "addAttributes",
-      icon: <MdBuild />,
-      adminOnly: true,
-    },
+
     {
       name: "مدیریت وب‌سایت",
       value: "website",

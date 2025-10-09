@@ -28,8 +28,6 @@ const MainContent = ({ activeComponent }) => {
         return <AddProduct />;
       case "productList":
         return <ProductList />;
-      case "addAttributes":
-        return <AddAttributes />;
       case "website":
         return <WebsiteManagement />;
       case "logout":

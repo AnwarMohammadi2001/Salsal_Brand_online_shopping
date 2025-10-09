@@ -26,7 +26,7 @@ const AddNewProduct = () => {
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
   const [otherImages, setOtherImages] = useState([]);
-  const [attributeValues, setAttributeValues] = useState({}); // { attrId: value }
+  const [attributeValues, setAttributeValues] = useState({});
 
   // Redux state
   const { categories } = useSelector((state) => state.categories);
@@ -64,19 +64,24 @@ const AddNewProduct = () => {
     }
   }, [successAdd, dispatch]);
 
-  // Handle attribute change
+  // Handle attributes
   const handleAttributeChange = (attrId, value) => {
     setAttributeValues((prev) => ({ ...prev, [attrId]: value }));
   };
 
-  // Handle images
-  const handleOtherImages = (e) => setOtherImages([...e.target.files]);
+  // Handle other images (multiple)
+  const handleOtherImages = (e) => {
+    const files = Array.from(e.target.files);
+    setOtherImages(files);
+  };
 
-  // Submit
+  // Handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !category || !priceAFN || !priceUSD)
-      return alert("Fill required fields");
+
+    if (!name || !category || !priceAFN || !priceUSD) {
+      return alert("Please fill all required fields!");
+    }
 
     const formData = new FormData();
     formData.append("name", name);
@@ -93,7 +98,6 @@ const AddNewProduct = () => {
     if (backImage) formData.append("backImage", backImage);
     otherImages.forEach((img) => formData.append("otherImages", img));
 
-    // Append attributes
     const attrsArray = Object.entries(attributeValues).map(([id, value]) => ({
       attributeId: id,
       value,
@@ -106,23 +110,23 @@ const AddNewProduct = () => {
   return (
     <div className="p-6 max-w-3xl mx-auto bg-white rounded-xl shadow-md">
       <h2 className="text-xl font-semibold mb-4">Add New Product</h2>
-      <form onSubmit={handleSubmit} className="space-y-3">
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Basic Info */}
         <input
           type="text"
-          placeholder="Product Name"
+          placeholder="Product Name *"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
-          required
         />
 
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
-          required
         >
-          <option value="">Select Category</option>
+          <option value="">Select Category *</option>
           {categories.map((cat) => (
             <option key={cat._id} value={cat._id}>
               {cat.name}
@@ -135,7 +139,7 @@ const AddNewProduct = () => {
           <div className="space-y-2">
             {attributes.map((attr) => (
               <div key={attr._id}>
-                <label className="block mb-1 font-medium">{attr.name}</label>
+                <label className="block font-medium mb-1">{attr.name}</label>
                 {attr.type === "input" && (
                   <input
                     type="text"
@@ -181,43 +185,49 @@ const AddNewProduct = () => {
           </div>
         )}
 
-        <input
-          type="number"
-          placeholder="Price (AFN)"
-          value={priceAFN}
-          onChange={(e) => setPriceAFN(e.target.value)}
-          className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
-          required
-        />
-        <input
-          type="number"
-          placeholder="Price (USD)"
-          value={priceUSD}
-          onChange={(e) => setPriceUSD(e.target.value)}
-          className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
-          required
-        />
-        <input
-          type="number"
-          placeholder="Stock"
-          value={stock}
-          onChange={(e) => setStock(e.target.value)}
-          className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
-        />
-        <input
-          type="text"
-          placeholder="Weight"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
-          className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
-        />
-        <input
-          type="text"
-          placeholder="Material"
-          value={material}
-          onChange={(e) => setMaterial(e.target.value)}
-          className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
-        />
+        {/* Price & Stock */}
+        <div className="grid grid-cols-2 gap-3">
+          <input
+            type="number"
+            placeholder="Price (AFN) *"
+            value={priceAFN}
+            onChange={(e) => setPriceAFN(e.target.value)}
+            className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
+          />
+          <input
+            type="number"
+            placeholder="Price (USD) *"
+            value={priceUSD}
+            onChange={(e) => setPriceUSD(e.target.value)}
+            className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
+          />
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
+          <input
+            type="number"
+            placeholder="Stock"
+            value={stock}
+            onChange={(e) => setStock(e.target.value)}
+            className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
+          />
+          <input
+            type="text"
+            placeholder="Weight"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
+          />
+          <input
+            type="text"
+            placeholder="Material"
+            value={material}
+            onChange={(e) => setMaterial(e.target.value)}
+            className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
+          />
+        </div>
+
+        {/* Details */}
         <textarea
           placeholder="Details"
           value={details}
@@ -231,28 +241,60 @@ const AddNewProduct = () => {
           className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
         />
 
-        <label className="block font-medium">Front Image</label>
-        <input
-          type="file"
-          onChange={(e) => setFrontImage(e.target.files[0])}
-          className="w-full"
-        />
+        {/* Image Uploads */}
+        <div>
+          <label className="block font-medium">Front Image</label>
+          <input
+            type="file"
+            onChange={(e) => setFrontImage(e.target.files[0])}
+            className="w-full"
+          />
+          {frontImage && (
+            <img
+              src={URL.createObjectURL(frontImage)}
+              alt="front"
+              className="w-24 h-24 object-cover mt-2 rounded"
+            />
+          )}
+        </div>
 
-        <label className="block font-medium">Back Image</label>
-        <input
-          type="file"
-          onChange={(e) => setBackImage(e.target.files[0])}
-          className="w-full"
-        />
+        <div>
+          <label className="block font-medium">Back Image</label>
+          <input
+            type="file"
+            onChange={(e) => setBackImage(e.target.files[0])}
+            className="w-full"
+          />
+          {backImage && (
+            <img
+              src={URL.createObjectURL(backImage)}
+              alt="back"
+              className="w-24 h-24 object-cover mt-2 rounded"
+            />
+          )}
+        </div>
 
-        <label className="block font-medium">Other Images</label>
-        <input
-          type="file"
-          multiple
-          onChange={handleOtherImages}
-          className="w-full"
-        />
+        <div>
+          <label className="block font-medium">Other Images</label>
+          <input
+            type="file"
+            multiple
+            onChange={handleOtherImages}
+            className="w-full"
+          />
+          <div className="flex flex-wrap gap-2 mt-2">
+            {otherImages.map((img, i) => (
+              <img
+                key={i}
+                src={URL.createObjectURL(img)}
+                alt="preview"
+                className="w-20 h-20 object-cover rounded"
+              />
+            ))}
+          </div>
+        </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={loading}
@@ -262,7 +304,11 @@ const AddNewProduct = () => {
         </button>
       </form>
 
+      {/* Messages */}
       {error && <p className="text-red-500 mt-3">{error}</p>}
+      {successAdd && (
+        <p className="text-green-500 mt-3">✅ Product added successfully!</p>
+      )}
     </div>
   );
 };
