@@ -12,6 +12,7 @@ import attributeRoutes from "./routes/attributeRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import sliderRoutes from "./routes/sliderRoutes.js";
 import newsletterRoutes from "./routes/newsletterRoutes.js";
+import categoryListRoutes from "./routes/categoryListRoutes.js";
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.use("/api/attributes", attributeRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/sliders", sliderRoutes);
 app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/categorylist", categoryListRoutes);
 
 // ✅ Catch-all route (for React production build)
 app.use(express.static(path.join(process.cwd(), "Frontend", "build")));

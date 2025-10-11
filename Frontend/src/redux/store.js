@@ -5,6 +5,7 @@ import categoryReducer from "./slices/categorySlice";
 import attributeReducer from "./slices/attributeSlice";
 import productReducer from "./slices/productSlice";
 import sliderReducer from "./slices/sliderSlice";
+import categoryListReducer from "./slices/categoryListSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     attributes: attributeReducer,
     products: productReducer,
     slider: sliderReducer,
+    categoryList: categoryListReducer,
   },
 });
