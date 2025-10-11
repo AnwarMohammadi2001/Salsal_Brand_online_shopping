@@ -1,7 +1,12 @@
 import React from "react";
+import SliderAddForm from "./SliderAddForm";
 
 const WebsiteManagement = () => {
-  return <div>WebsiteManagement</div>;
+  return (
+    <div>
+      <SliderAddForm />
+    </div>
+  );
 };
 
 export default WebsiteManagement;

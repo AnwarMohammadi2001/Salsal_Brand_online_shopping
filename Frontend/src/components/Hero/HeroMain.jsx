@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { MdArrowForwardIos, MdArrowBackIos } from "react-icons/md";
@@ -11,46 +11,54 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSliders } from "../../redux/slices/sliderSlice";
 
 const HeroMain = () => {
   const [prevEl, setPrevEl] = useState(null);
   const [nextEl, setNextEl] = useState(null);
+   const dispatch = useDispatch();
+    const { sliders, loading, error } = useSelector((state) => state.slider);
+  
+    useEffect(() => {
+      dispatch(fetchSliders());
+    }, [dispatch]);
 
   // progress state
   const [progress, setProgress] = useState(0);
 
-  const sliders = [
-    {
-      id: 1,
-      title: "Push Your Limits",
-      desc: "Achieve your fitness goals with modern equipment and expert trainers guiding you.",
-      image: "/slider/img5.webp",
-    },
-    {
-      id: 2,
-      title: "Strength & Power",
-      desc: "Build strength and endurance with personalized workout plans tailored for you.",
-      image: "/slider/img4.jpg",
-    },
-    {
-      id: 3,
-      title: "Stay Fit, Stay Healthy",
-      desc: "Join our community and take your fitness journey to the next level.",
-      image: "/slider/img3.jpg",
-    },
-    {
-      id: 4,
-      title: "Stay Fit, Stay Healthy",
-      desc: "Join our community and take your fitness journey to the next level.",
-      image: "/slider/img1.jpg",
-    },
-    {
-      id: 5,
-      title: "Stay Fit, Stay Healthy",
-      desc: "Join our community and take your fitness journey to the next level.",
-      image: "/slider/img2.jpg",
-    },
-  ];
+  // const sliders = [
+  //   {
+  //     id: 1,
+  //     title: "Push Your Limits",
+  //     desc: "Achieve your fitness goals with modern equipment and expert trainers guiding you.",
+  //     image: "/slider/img5.webp",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Strength & Power",
+  //     desc: "Build strength and endurance with personalized workout plans tailored for you.",
+  //     image: "/slider/img4.jpg",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Stay Fit, Stay Healthy",
+  //     desc: "Join our community and take your fitness journey to the next level.",
+  //     image: "/slider/img3.jpg",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Stay Fit, Stay Healthy",
+  //     desc: "Join our community and take your fitness journey to the next level.",
+  //     image: "/slider/img1.jpg",
+  //   },
+  //   {
+  //     id: 5,
+  //     title: "Stay Fit, Stay Healthy",
+  //     desc: "Join our community and take your fitness journey to the next level.",
+  //     image: "/slider/img2.jpg",
+  //   },
+  // ];
 
   return (
     <div className="w-full h-[50vh]  md:h-[400px] lg:h-[680px] relative group">
@@ -79,7 +87,10 @@ const HeroMain = () => {
               initial="hidden"
               animate="show"
               className="w-full h-full md:h-[400px] lg:h-[680px] bg-cover bg-center relative flex pt-28 md:pt-0 items-center justify-center"
-              style={{ backgroundImage: `url(${slide.image})` }}
+              style={{ backgroundImage: `url(http://localhost:5000/${slide.image.replaceAll(
+                    "\\",
+                    "/"
+                  )})` }}
             >
               {/* <div className="absolute inset-0 bg-black/50"></div>
               <motion.div
