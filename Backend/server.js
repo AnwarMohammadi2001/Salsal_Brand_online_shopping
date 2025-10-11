@@ -11,6 +11,7 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import attributeRoutes from "./routes/attributeRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import sliderRoutes from "./routes/sliderRoutes.js";
+import newsletterRoutes from "./routes/newsletterRoutes.js";
 
 dotenv.config();
 
@@ -38,11 +39,12 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/attributes", attributeRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/sliders", sliderRoutes);
+app.use("/api/newsletter", newsletterRoutes);
 
 // ✅ Catch-all route (for React production build)
-app.use(express.static(path.join(process.cwd(), "client", "build")));
+app.use(express.static(path.join(process.cwd(), "Frontend", "build")));
 app.get("/*", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "client", "build", "index.html"));
+  res.sendFile(path.join(process.cwd(), "Frontend", "build", "index.html"));
 });
 
 // Connect MongoDB
