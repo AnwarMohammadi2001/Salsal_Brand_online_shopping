@@ -23,7 +23,8 @@
     "multer": "^2.0.2",
     "nodemailer": "^7.0.9",
     "path": "^0.12.7",
-    "path-to-regexp": "^8.3.0"
+    "path-to-regexp": "^8.3.0",
+    "slugify": "^1.6.6"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
