@@ -61,9 +61,12 @@ export const addProduct = async (req, res) => {
 };
 
 // Get all products
+// Get all products
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate("category");
+    const products = await Product.find()
+      .populate("category")
+      .populate("attributes.attributeId"); // ✅ populate attribute names
     res.status(200).json(products);
   } catch (error) {
     console.error("Get Products Error:", error);
@@ -71,11 +74,15 @@ export const getProducts = async (req, res) => {
   }
 };
 
-// Get a single product
+// Get a single product with populated category and attributes
 export const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate("category");
+    const product = await Product.findById(req.params.id)
+      .populate("category") // populate category
+      .populate("attributes.attributeId"); // populate attribute names
+
     if (!product) return res.status(404).json({ message: "Product not found" });
+
     res.status(200).json(product);
   } catch (error) {
     console.error("Get Product By ID Error:", error);
