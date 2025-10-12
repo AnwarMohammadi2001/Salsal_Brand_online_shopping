@@ -64,6 +64,15 @@ const AddNewProduct = () => {
     }
   }, [successAdd, dispatch]);
 
+  // Cleanup object URLs to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      otherImages.forEach((img) => URL.revokeObjectURL(img));
+      frontImage && URL.revokeObjectURL(frontImage);
+      backImage && URL.revokeObjectURL(backImage);
+    };
+  }, [otherImages, frontImage, backImage]);
+
   // Handle attributes
   const handleAttributeChange = (attrId, value) => {
     setAttributeValues((prev) => ({ ...prev, [attrId]: value }));
@@ -112,7 +121,7 @@ const AddNewProduct = () => {
       <h2 className="text-xl font-semibold mb-4">Add New Product</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Basic Info */}
+        {/* Product Name */}
         <input
           type="text"
           placeholder="Product Name *"
@@ -121,6 +130,7 @@ const AddNewProduct = () => {
           className="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-blue-300"
         />
 
+        {/* Category */}
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
@@ -129,7 +139,7 @@ const AddNewProduct = () => {
           <option value="">Select Category *</option>
           {categories.map((cat) => (
             <option key={cat._id} value={cat._id}>
-              {cat.nameFa} {/* Show Dari name here */}
+              {cat.nameFa}
             </option>
           ))}
         </select>

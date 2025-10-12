@@ -28,6 +28,12 @@ const SignIn = () => {
     if (login.fulfilled.match(resultAction)) {
       const loggedUser = resultAction.payload.user;
 
+      // ✅ Save user to localStorage (so app knows who's logged in)
+      localStorage.setItem("user", JSON.stringify(loggedUser));
+
+      // ✅ Trigger global event to load cart for this user
+      window.dispatchEvent(new Event("loadUserCart"));
+
       // Redirect based on role
       if (loggedUser.isAdmin) {
         navigate("/dashboard");

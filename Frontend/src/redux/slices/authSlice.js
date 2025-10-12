@@ -8,11 +8,11 @@ export const register = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await registerUser(userData);
-      toast.success("ثبت نام با موفقیت انجام شد!"); // ✅ Toast on success
+      toast.success("ثبت نام با موفقیت انجام شد!");
       return response;
     } catch (error) {
       const message = error.response?.data || "خطا در ثبت نام";
-      toast.error(message); // ✅ Toast on error
+      toast.error(message);
       return rejectWithValue(message);
     }
   }
@@ -24,13 +24,16 @@ export const login = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await loginUser(userData);
+
+      // ✅ Save user info and token
       localStorage.setItem("user", JSON.stringify(response.user));
       localStorage.setItem("token", response.token);
-      toast.success("ورود با موفقیت انجام شد!"); // ✅ Toast on login success
+
+      toast.success("ورود با موفقیت انجام شد!");
       return response;
     } catch (error) {
       const message = error.response?.data || "خطا در ورود";
-      toast.error(message); // ✅ Toast on error
+      toast.error(message);
       return rejectWithValue(message);
     }
   }
@@ -52,14 +55,21 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
+
+      // ✅ Remove user & token from localStorage
       localStorage.removeItem("user");
       localStorage.removeItem("token");
-      toast.info("خروج انجام شد"); // ✅ Toast on logout
+
+      // ✅ Trigger event to clear user cart
+      const logoutEvent = new CustomEvent("userLoggedOut");
+      window.dispatchEvent(logoutEvent);
+
+      toast.info("خروج انجام شد");
     },
   },
   extraReducers: (builder) => {
     builder
-      // Register
+      // ------------------ Register ------------------
       .addCase(register.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -72,7 +82,8 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      // Login
+
+      // ------------------ Login ------------------
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -81,6 +92,14 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+
+        // ✅ Save again for safety
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
+        localStorage.setItem("token", action.payload.token);
+
+        // ✅ Trigger cart load for this user
+        const loginEvent = new CustomEvent("loadUserCart");
+        window.dispatchEvent(loginEvent);
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;

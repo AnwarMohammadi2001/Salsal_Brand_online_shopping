@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/slices/productSlice";
+import { addToCart } from "../../redux/slices/cartSlice";
 import { toast } from "react-hot-toast";
 
 // Skeleton loader for clean loading state
@@ -65,10 +66,10 @@ const ProductDetailsPage = () => {
     }
   }, [products, categorySlug, productSlug]);
 
+  // داخل کامپوننت
   const handleAddToCart = () => {
-    // Implement your add-to-cart logic here
+    dispatch(addToCart(product));
     toast.success("محصول به سبد خرید اضافه شد!");
-    console.log(product.attributes);
   };
 
   if (loading) return <ProductDetailSkeleton />;

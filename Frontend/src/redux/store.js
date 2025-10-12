@@ -6,6 +6,7 @@ import attributeReducer from "./slices/attributeSlice";
 import productReducer from "./slices/productSlice";
 import sliderReducer from "./slices/sliderSlice";
 import categoryListReducer from "./slices/categoryListSlice";
+import cartReducer from "./slices/cartSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     products: productReducer,
     slider: sliderReducer,
     categoryList: categoryListReducer,
+    cart: cartReducer,
   },
 });

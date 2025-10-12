@@ -51,6 +51,8 @@ const Navbar = () => {
     dispatch(logout());
     setIsUserModalOpen(false);
     navigate("/");
+    localStorage.removeItem("user");
+    window.dispatchEvent(new Event("userLoggedOut"));
   };
 
   const handleViewProfile = () => {
