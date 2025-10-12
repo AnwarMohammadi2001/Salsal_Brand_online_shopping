@@ -9,7 +9,8 @@ import {
 } from "../../../redux/slices/categorySlice";
 
 const AddCategory = () => {
-  const [name, setName] = useState("");
+  const [nameEn, setNameEn] = useState("");
+  const [nameFa, setNameFa] = useState("");
   const [editingId, setEditingId] = useState(null);
 
   const dispatch = useDispatch();
@@ -23,7 +24,8 @@ const AddCategory = () => {
 
   useEffect(() => {
     if (success) {
-      setName("");
+      setNameEn("");
+      setNameFa("");
       setEditingId(null);
       dispatch(resetCategoryState());
       dispatch(fetchCategories());
@@ -32,17 +34,21 @@ const AddCategory = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name.trim()) return alert("Category name is required!");
+
+    if (!nameEn.trim() || !nameFa.trim()) {
+      return alert("Both English and Farsi names are required!");
+    }
 
     if (editingId) {
-      dispatch(updateCategory({ id: editingId, name }));
+      dispatch(updateCategory({ id: editingId, nameEn, nameFa }));
     } else {
-      dispatch(addCategory({ name }));
+      dispatch(addCategory({ nameEn, nameFa }));
     }
   };
 
   const handleEdit = (cat) => {
-    setName(cat.name);
+    setNameEn(cat.nameEn);
+    setNameFa(cat.nameFa);
     setEditingId(cat._id);
   };
 
@@ -58,14 +64,31 @@ const AddCategory = () => {
         {editingId ? "Edit Category" : "Add New Category"}
       </h2>
 
-      <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
-        <input
-          type="text"
-          placeholder="Enter category name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
-        />
+      <form onSubmit={handleSubmit} className="space-y-3 mb-4">
+        {/* English Name */}
+        <div>
+          <label className="block font-medium">English Name</label>
+          <input
+            type="text"
+            placeholder="Enter English name"
+            value={nameEn}
+            onChange={(e) => setNameEn(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+          />
+        </div>
+
+        {/* Farsi Name */}
+        <div>
+          <label className="block font-medium">Farsi Name</label>
+          <input
+            type="text"
+            placeholder="Enter Farsi name"
+            value={nameFa}
+            onChange={(e) => setNameFa(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+          />
+        </div>
+
         <button
           type="submit"
           disabled={loading}
@@ -85,7 +108,10 @@ const AddCategory = () => {
               key={cat._id}
               className="border border-gray-200 p-2 rounded-lg flex justify-between items-center"
             >
-              <span>{cat.name}</span>
+              <div>
+                <p className="font-medium">🇬🇧 {cat.nameEn}</p>
+                <p className="text-gray-500">🇮🇷 {cat.nameFa}</p>
+              </div>
               <div className="flex items-center gap-3 text-sm">
                 <button
                   onClick={() => handleEdit(cat)}

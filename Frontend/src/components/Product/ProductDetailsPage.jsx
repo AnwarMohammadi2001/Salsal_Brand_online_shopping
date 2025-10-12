@@ -1,47 +1,44 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../redux/slices/productSlice"; // adjust path if needed
+import { fetchProducts } from "../../redux/slices/productSlice";
 
 const ProductDetailsPage = () => {
-  const { category, productName } = useParams();
+  const { category: categorySlug, productName: productSlug } = useParams();
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector((state) => state.products);
 
   const [product, setProduct] = useState(null);
   const [currentImage, setCurrentImage] = useState("");
 
-  // Helper to match slugs
   const slugify = (text) =>
     text
-      ?.toLowerCase()
-      ?.replace(/\s+/g, "-")
-      ?.replace(/[^\w-]+/g, "");
+      ?.toString()
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w-]+/g, "");
 
-  // Fetch all products if not loaded yet
+  // Fetch products if not loaded
   useEffect(() => {
     if (!products || products.length === 0) {
       dispatch(fetchProducts());
     }
   }, [dispatch, products]);
 
-  // Find product once products are available
+  // Find the product by URL slugs
   useEffect(() => {
     if (products.length > 0) {
-      const matched = products.find(
-        (p) =>
-          slugify(p.category?.name || p.category) === category &&
-          slugify(p.name) === productName
-      );
+  const matched = products.find(
+    (p) => p.category?.slug === categorySlug && p._id === productSlug
+  );
 
       if (matched) {
         setProduct(matched);
         setCurrentImage(`http://localhost:5000/${matched.frontImage}`);
       }
     }
-  }, [products, category, productName]);
+  }, [products, categorySlug, productSlug]);
 
-  // Handle loading & error states
   if (loading) return <p className="text-center py-6">در حال بارگذاری...</p>;
   if (error) return <p className="text-center text-red-500 py-6">{error}</p>;
   if (!product) return <p className="text-center py-6">محصول یافت نشد</p>;
@@ -79,7 +76,7 @@ const ProductDetailsPage = () => {
       <div className="flex-1 space-y-4">
         <h1 className="text-2xl font-semibold">{product.name}</h1>
         <p className="text-gray-600">
-          {product.category?.name || product.category}
+          {product.category?.nameFa || product.category?.nameEn}
         </p>
         <div className="flex items-center gap-3 text-lg font-medium">
           <span>{product.priceAFN} افغانی</span>

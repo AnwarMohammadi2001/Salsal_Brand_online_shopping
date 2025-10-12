@@ -142,7 +142,7 @@ const ProductList = () => {
             <div className="mt-4">
               <h2 className="text-xl font-bold">{selectedProduct.name}</h2>
               <p className="text-gray-500">
-                Category: {selectedProduct.category?.name || "N/A"}
+                Category: {selectedProduct.category?.nameFa || "N/A"}
               </p>
               <p>Price (AFN): {selectedProduct.priceAFN}</p>
               <p>Price (USD): {selectedProduct.priceUSD}</p>

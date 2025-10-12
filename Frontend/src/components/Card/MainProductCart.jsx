@@ -12,13 +12,14 @@ const MainProductCart = ({ product }) => {
       .replace(/\s+/g, "-")
       .replace(/[^\w-]+/g, "");
 
-  const handleClick = () => {
-    navigate(
-      `/collections/${slugify(
-        product.category.name || product.category
-      )}/${slugify(product.name)}`
-    );
-  };
+const handleClick = () => {
+  const categorySlug =
+    product.category?.slug || slugify(product.category?.nameEn);
+  const productSlug = slugify(product.name); // ✅ slugify product name
+  navigate(`/collections/${categorySlug}/${product._id}`);
+};
+
+
 
   // Use frontImage and backImage directly
   const FRONT_IMAGE_URL = `http://localhost:5000/${product.frontImage}`;
@@ -40,7 +41,7 @@ const MainProductCart = ({ product }) => {
       />
 
       <div className="py-3 px-3 flex text-gray-700 text-sm flex-col gap-1">
-        <p>{product.category.name || product.category}</p>
+        <p>{product.category.nameFa || product.category.Fa}</p>
         <p>{product.name}</p>
         <div className="flex justify-between items-center">
           <p>{product.priceAFN} افغانی</p>

@@ -1,21 +1,28 @@
+// redux/slices/categorySlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/categories";
 
 // ✅ Add Category
+// Add Category
 export const addCategory = createAsyncThunk(
   "categories/addCategory",
-  async (categoryData, { rejectWithValue }) => {
+  async ({ nameEn, nameFa }, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
       const config = {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
       };
-      const response = await axios.post(API_URL, categoryData, config);
-      return response.data;
+      const { data } = await axios.post(API_URL, { nameEn, nameFa }, config);
+      return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Add failed");
+      return rejectWithValue(
+        error.response?.data?.message || "Error adding category"
+      );
     }
   }
 );
@@ -27,12 +34,14 @@ export const fetchCategories = createAsyncThunk(
     try {
       const token = localStorage.getItem("token");
       const config = {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: token ? `Bearer ${token}` : "" },
       };
-      const response = await axios.get(API_URL, config);
-      return response.data;
+      const { data } = await axios.get(API_URL, config);
+      return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Fetch failed");
+      return rejectWithValue(
+        error.response?.data?.message || "Error fetching categories"
+      );
     }
   }
 );
@@ -40,16 +49,25 @@ export const fetchCategories = createAsyncThunk(
 // ✅ Update Category
 export const updateCategory = createAsyncThunk(
   "categories/updateCategory",
-  async ({ id, name }, { rejectWithValue }) => {
+  async ({ id, nameEn, nameFa }, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
       const config = {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
       };
-      const response = await axios.put(`${API_URL}/${id}`, { name }, config);
-      return response.data;
+      const { data } = await axios.put(
+        `${API_URL}/${id}`,
+        { nameEn, nameFa },
+        config
+      );
+      return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Update failed");
+      return rejectWithValue(
+        error.response?.data?.message || "Error updating category"
+      );
     }
   }
 );
@@ -61,16 +79,19 @@ export const deleteCategory = createAsyncThunk(
     try {
       const token = localStorage.getItem("token");
       const config = {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: token ? `Bearer ${token}` : "" },
       };
       await axios.delete(`${API_URL}/${id}`, config);
       return id;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Delete failed");
+      return rejectWithValue(
+        error.response?.data?.message || "Error deleting category"
+      );
     }
   }
 );
 
+// ✅ Slice
 const categorySlice = createSlice({
   name: "categories",
   initialState: {
@@ -81,14 +102,13 @@ const categorySlice = createSlice({
   },
   reducers: {
     resetCategoryState: (state) => {
-      state.loading = false;
-      state.error = null;
       state.success = false;
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      // ✅ Add Category
+      // Add Category
       .addCase(addCategory.pending, (state) => {
         state.loading = true;
       })
@@ -102,7 +122,7 @@ const categorySlice = createSlice({
         state.error = action.payload;
       })
 
-      // ✅ Fetch Categories
+      // Fetch Categories
       .addCase(fetchCategories.pending, (state) => {
         state.loading = true;
       })
@@ -115,36 +135,20 @@ const categorySlice = createSlice({
         state.error = action.payload;
       })
 
-      // ✅ Update Category
-      .addCase(updateCategory.pending, (state) => {
-        state.loading = true;
-      })
+      // Update Category
       .addCase(updateCategory.fulfilled, (state, action) => {
-        state.loading = false;
         state.success = true;
         state.categories = state.categories.map((cat) =>
           cat._id === action.payload._id ? action.payload : cat
         );
       })
-      .addCase(updateCategory.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
 
-      // ✅ Delete Category
-      .addCase(deleteCategory.pending, (state) => {
-        state.loading = true;
-      })
+      // Delete Category
       .addCase(deleteCategory.fulfilled, (state, action) => {
-        state.loading = false;
         state.success = true;
         state.categories = state.categories.filter(
           (cat) => cat._id !== action.payload
         );
-      })
-      .addCase(deleteCategory.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
       });
   },
 });
