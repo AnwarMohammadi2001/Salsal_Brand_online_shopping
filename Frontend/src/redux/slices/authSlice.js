@@ -1,6 +1,8 @@
+// redux/slices/authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { registerUser, loginUser } from "../../api/api";
 import { toast } from "react-toastify";
+import { loadCartForCurrentUser, clearCart } from "./cartSlice";
 
 // ------------------ Register ------------------
 export const register = createAsyncThunk(
@@ -21,13 +23,23 @@ export const register = createAsyncThunk(
 // ------------------ Login ------------------
 export const login = createAsyncThunk(
   "auth/login",
-  async (userData, { rejectWithValue }) => {
+  async (userData, { dispatch, rejectWithValue }) => {
     try {
       const response = await loginUser(userData);
+      const { user, token } = response;
 
-      // ✅ Save user info and token
-      localStorage.setItem("user", JSON.stringify(response.user));
-      localStorage.setItem("token", response.token);
+      // ✅ ذخیره در localStorage
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          user,
+          token,
+        })
+      );
+      localStorage.setItem("token", token);
+
+      // ✅ بعد از لاگین، cart کاربر را بارگذاری کن
+      dispatch(loadCartForCurrentUser());
 
       toast.success("ورود با موفقیت انجام شد!");
       return response;
@@ -39,10 +51,28 @@ export const login = createAsyncThunk(
   }
 );
 
+// ------------------ Logout ------------------
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_, { dispatch }) => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser?.user?._id || storedUser?._id) {
+      const userId = storedUser.user?._id || storedUser._id;
+      localStorage.removeItem(`cart_${userId}`);
+    }
+
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+
+    dispatch(clearCart());
+    toast.info("خروج انجام شد");
+  }
+);
+
 // ------------------ Initial State ------------------
 const initialState = {
-  user: JSON.parse(localStorage.getItem("user")) || null,
-  token: localStorage.getItem("token") || null,
+  user: JSON.parse(localStorage.getItem("user"))?.user || null,
+  token: JSON.parse(localStorage.getItem("user"))?.token || null,
   loading: false,
   error: null,
 };
@@ -51,22 +81,7 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-
-      // ✅ Remove user & token from localStorage
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-
-      // ✅ Trigger event to clear user cart
-      const logoutEvent = new CustomEvent("userLoggedOut");
-      window.dispatchEvent(logoutEvent);
-
-      toast.info("خروج انجام شد");
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // ------------------ Register ------------------
@@ -92,21 +107,19 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-
-        // ✅ Save again for safety
-        localStorage.setItem("user", JSON.stringify(action.payload.user));
-        localStorage.setItem("token", action.payload.token);
-
-        // ✅ Trigger cart load for this user
-        const loginEvent = new CustomEvent("loadUserCart");
-        window.dispatchEvent(loginEvent);
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // ------------------ Logout ------------------
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+        state.token = null;
+        state.loading = false;
       });
   },
 });
 
-export const { logout } = authSlice.actions;
 export default authSlice.reducer;

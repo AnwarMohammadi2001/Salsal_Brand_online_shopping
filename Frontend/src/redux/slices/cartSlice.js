@@ -1,18 +1,26 @@
 // redux/slices/cartSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
-// Helper function to get current user's cart key
+// ✅ Helper: ساخت کلید مخصوص هر کاربر
 const getCartKey = () => {
-  const user = JSON.parse(localStorage.getItem("user")); // must have id or email
-  return user ? `cart_${user._id || user.email}` : null;
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  if (!storedUser) return null;
+
+  const user =
+    storedUser._id || storedUser.email ? storedUser : storedUser.user || null;
+
+  if (!user) return null;
+  return `cart_${user._id || user.email}`;
 };
 
+// ✅ Load user cart from localStorage
 const loadUserCart = () => {
   const key = getCartKey();
   if (!key) return [];
   return JSON.parse(localStorage.getItem(key)) || [];
 };
 
+// ✅ Save user cart to localStorage
 const saveUserCart = (cartItems) => {
   const key = getCartKey();
   if (key) localStorage.setItem(key, JSON.stringify(cartItems));

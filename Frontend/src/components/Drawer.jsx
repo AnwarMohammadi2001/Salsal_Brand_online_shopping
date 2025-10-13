@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { FaShoppingBag } from "react-icons/fa";
+import { IoMdTrash } from "react-icons/io";
 import {
   removeFromCart,
   increaseQuantity,
@@ -20,9 +21,7 @@ const Drawer = ({ isDrawerOpens, setIsDrawerOpens }) => {
     } else {
       document.body.classList.remove("overflow-hidden");
     }
-    return () => {
-      document.body.classList.remove("overflow-hidden");
-    };
+    return () => document.body.classList.remove("overflow-hidden");
   }, [isDrawerOpens]);
 
   const totalPrice = cartItems.reduce(
@@ -71,41 +70,66 @@ const Drawer = ({ isDrawerOpens, setIsDrawerOpens }) => {
               </div>
             ) : (
               <div className="flex-1 flex flex-col gap-4 overflow-y-auto mt-4">
-                {cartItems.map((item) => (
-                  <div
-                    key={item._id}
-                    className="flex justify-between items-center border-b pb-2"
-                  >
-                    <div>
-                      <h3 className="font-semibold">{item.name}</h3>
-                      <p>
-                        {item.priceAFN} افغانی x {item.quantity} ={" "}
-                        {item.priceAFN * item.quantity} افغانی
-                      </p>
+                {cartItems.map((item) => {
+                  const FRONT_IMAGE_URL = `http://localhost:5000/${item.frontImage}`;
+                  const BACK_IMAGE_URL = item.backImage
+                    ? `http://localhost:5000/${item.backImage}`
+                    : FRONT_IMAGE_URL;
+
+                  return (
+                    <div
+                      key={item._id}
+                      className="flex justify-between items-center gap-x-5 border-b pb-2"
+                    >
+                      {/* Product Image */}
+                      <div className="w-12 h-12 flex-shrink-0">
+                        <img
+                          src={FRONT_IMAGE_URL}
+                          alt={item.name}
+                          className="w-full h-full object-cover rounded"
+                          onMouseOver={(e) =>
+                            (e.currentTarget.src = BACK_IMAGE_URL)
+                          }
+                          onMouseOut={(e) =>
+                            (e.currentTarget.src = FRONT_IMAGE_URL)
+                          }
+                        />
+                      </div>
+
+                      {/* Product Info */}
+                      <div className="flex-1 ml-3">
+                        <h3 className="font-semibold text-sm">{item.name}</h3>
+                        <p className="text-sm text-gray-600">
+                          {item.priceAFN} افغانی × {item.quantity} ={" "}
+                          {item.priceAFN * item.quantity} افغانی
+                        </p>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => dispatch(decreaseQuantity(item._id))}
+                          className="px-2 bg-gray-200 rounded"
+                        >
+                          -
+                        </button>
+                        <span>{item.quantity}</span>
+                        <button
+                          onClick={() => dispatch(increaseQuantity(item._id))}
+                          className="px-2 bg-gray-200 rounded"
+                        >
+                          +
+                        </button>
+                        <button
+                          onClick={() => dispatch(removeFromCart(item._id))}
+                          className="px-2 text-red-500 rounded"
+                        >
+                          <IoMdTrash size={24} />
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => dispatch(decreaseQuantity(item._id))}
-                        className="px-2 bg-gray-200 rounded"
-                      >
-                        -
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button
-                        onClick={() => dispatch(increaseQuantity(item._id))}
-                        className="px-2 bg-gray-200 rounded"
-                      >
-                        +
-                      </button>
-                      <button
-                        onClick={() => dispatch(removeFromCart(item._id))}
-                        className="px-2 bg-red-500 text-white rounded"
-                      >
-                        حذف
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 

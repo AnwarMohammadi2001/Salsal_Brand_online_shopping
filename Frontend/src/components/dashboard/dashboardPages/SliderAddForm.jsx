@@ -54,7 +54,7 @@ const SliderAddForm = () => {
           <option value="">Select Category</option>
           {categories.map((cat) => (
             <option key={cat._id} value={cat._id}>
-              {cat.name}
+              {cat.nameFa}
             </option>
           ))}
         </select>
@@ -106,7 +106,7 @@ const SliderAddForm = () => {
                 key={cat._id}
                 className="border rounded-xl p-3 text-center bg-gray-50 hover:bg-gray-100 transition"
               >
-                <p className="font-medium">{cat.name}</p>
+                <p className="font-medium">{cat.nameFa}</p>
               </div>
             ))}
           </div>

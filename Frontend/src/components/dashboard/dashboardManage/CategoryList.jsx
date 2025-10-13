@@ -58,7 +58,7 @@ const CategoryList = () => {
           <option value="">Select Category</option>
           {categories.map((cat) => (
             <option key={cat._id} value={cat._id}>
-              {cat.name}
+              {cat.nameFa}
             </option>
           ))}
         </select>
