@@ -9,6 +9,7 @@ import SignUp from "../feature/authentication/SignUp";
 import ProductDetailsPage from "../components/Product/ProductDetailsPage"
 import ProductMainPage from "../components/Product/ProductMainPage";
 import WishList from "../pages/WishList";
+import FullPageCart from "../pages/FullPageCart";
 
 export default function AppRoutes() {
   return (
@@ -24,6 +25,8 @@ export default function AppRoutes() {
               element={<ProductDetailsPage />}
             />
             <Route path="/wishlist" element={<WishList />} />
+            <Route path="/cartpage" element={<FullPageCart />} />
+
           </Route>
 
           <Route path="/signin" element={<SignIn />} />

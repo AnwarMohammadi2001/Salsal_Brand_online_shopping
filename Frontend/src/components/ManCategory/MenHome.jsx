@@ -83,6 +83,7 @@ const MenHome = () => {
             </p>
             <Link
               to="/collections"
+              onClick={() => scrollY(0, 0)}
               className="underline text-xl font-semibold cursor-pointer hover:text-gray-700"
             >
               دیدن همه

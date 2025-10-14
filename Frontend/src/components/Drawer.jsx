@@ -17,12 +17,14 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../redux/slices/wishlistSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 const Drawer = ({ isDrawerOpens, setIsDrawerOpens }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
   const { items: wishlist } = useSelector((state) => state.wishlist);
   const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   // Disable body scroll when drawer open
   React.useEffect(() => {
@@ -205,9 +207,14 @@ const Drawer = ({ isDrawerOpens, setIsDrawerOpens }) => {
                     <CiTrash size={20} />
                   </button>
                 </div>
-                <button className="w-full bg-black text-white font-semibold py-3 rounded-full hover:opacity-90 transition">
+                {/* ✅ Continue Shopping Button */}
+                <Link
+                  onClick={() => setIsDrawerOpens(false)}
+                  // Navigate to home or shopping page
+                  className="w-full bg-black text-white py-3 rounded-lg mt-4 hover:opacity-90 transition"
+                >
                   ادامه خرید
-                </button>
+                </Link>
               </div>
             )}
           </motion.div>
