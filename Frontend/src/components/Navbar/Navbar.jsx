@@ -27,6 +27,7 @@ const Navbar = () => {
   const { user } = useSelector((state) => state.auth);
 
   const cartItems = useSelector((state) => state.cart.cartItems);
+    const { items: wishItems } = useSelector((state) => state.wishlist);
 
   const modalRef = useRef(null);
 
@@ -101,8 +102,16 @@ const Navbar = () => {
             <div className="hidden lg:block">
               <SearchBar />
             </div>
-            <Link to="/wishlist" className="text-amber-400 hidden md:block hover:text-amber-600 hover:-translate-y-1 transform transition-all duration-300">
+            <Link
+              to="/wishlist"
+              className="text-amber-400 relative hidden md:block hover:text-amber-600 hover:-translate-y-1 transform transition-all duration-300"
+            >
               <PiHeartStraight size={26} />
+              {wishItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-gray-700 text-white text-xs  px-1.5 py-0.5 rounded-full">
+                  {wishItems.length}
+                </span>
+              )}
             </Link>
 
             {/* User Icon / Initial */}

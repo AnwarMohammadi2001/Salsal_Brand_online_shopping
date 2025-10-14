@@ -2,8 +2,12 @@ import React from "react";
 import { Heart, Trash2, LogIn, UserPlus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromWishlist } from "../redux/slices/wishlistSlice";
 import MainProductCart from "../components/Card/MainProductCart";
+import { IoIosArrowRoundBack } from "react-icons/io";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../redux/slices/wishlistSlice";
 
 const WishList = () => {
   const navigate = useNavigate();
@@ -51,14 +55,21 @@ const WishList = () => {
   // 🩷 If user IS logged in
   return (
     <div className="min-h-[70vh] bg-gray-50 px-4 py-10">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Title */}
         <div className="flex items-center justify-between pb-5 ">
           <h1 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
             <Heart className="text-black" />
             لیست علاقه‌مندی‌ها شما
+            <span className="text-sm">({wishItems.length})</span>
           </h1>
-          <Link to="/">Home</Link>
+          <Link
+            to="/"
+            className="flex items-center border rounded-full py-1 px-4 gap-x-1 group"
+          >
+            <span className="text-sm">Home</span>
+            <IoIosArrowRoundBack className="group-hover:-translate-x-1 transition-transform duration-300" />
+          </Link>
         </div>
 
         {/* If wishlist empty */}

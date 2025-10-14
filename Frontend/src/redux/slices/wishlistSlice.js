@@ -1,10 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// ------------------ Helper Functions ------------------
+const getCurrentUser = () => {
+  try {
+    const data = JSON.parse(localStorage.getItem("user"));
+    return data?.user || data || null;
+  } catch {
+    return null;
+  }
+};
+
+const getWishlistKey = () => {
+  const user = getCurrentUser();
+  return user ? `wishlist_${user._id || user.email}` : null;
+};
+
 const loadWishlistFromStorage = () => {
   try {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) return [];
-    const saved = localStorage.getItem(`wishlist_${user._id || user.email}`);
+    const key = getWishlistKey();
+    if (!key) return [];
+    const saved = localStorage.getItem(key);
     return saved ? JSON.parse(saved) : [];
   } catch {
     return [];
@@ -12,14 +27,12 @@ const loadWishlistFromStorage = () => {
 };
 
 const saveWishlistToStorage = (wishlist) => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (!user) return;
-  localStorage.setItem(
-    `wishlist_${user._id || user.email}`,
-    JSON.stringify(wishlist)
-  );
+  const key = getWishlistKey();
+  if (!key) return;
+  localStorage.setItem(key, JSON.stringify(wishlist));
 };
 
+// ------------------ Slice ------------------
 const wishlistSlice = createSlice({
   name: "wishlist",
   initialState: {
@@ -41,10 +54,28 @@ const wishlistSlice = createSlice({
       state.items = [];
       saveWishlistToStorage([]);
     },
+    setWishlist: (state, action) => {
+      state.items = action.payload;
+    },
   },
 });
 
-export const { addToWishlist, removeFromWishlist, clearWishlist } =
+// ------------------ Actions ------------------
+export const { addToWishlist, removeFromWishlist, clearWishlist, setWishlist } =
   wishlistSlice.actions;
+
+// ------------------ Thunks ------------------
+
+// ✅ Load wishlist for current user (used after login)
+export const loadWishlistForCurrentUser = () => (dispatch) => {
+  const key = getWishlistKey();
+  if (!key) {
+    dispatch(clearWishlist());
+    return;
+  }
+  const saved = localStorage.getItem(key);
+  const items = saved ? JSON.parse(saved) : [];
+  dispatch(setWishlist(items));
+};
 
 export default wishlistSlice.reducer;

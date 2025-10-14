@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { registerUser, loginUser } from "../../api/api";
 import { toast } from "react-toastify";
 import { loadCartForCurrentUser, clearCart } from "./cartSlice";
+import { loadWishlistForCurrentUser, clearWishlist } from "./wishlistSlice";
 
 // ------------------ Register ------------------
 export const register = createAsyncThunk(
@@ -40,6 +41,7 @@ export const login = createAsyncThunk(
 
       // ✅ بعد از لاگین، cart کاربر را بارگذاری کن
       dispatch(loadCartForCurrentUser());
+      dispatch(loadWishlistForCurrentUser());
 
       toast.success("ورود با موفقیت انجام شد!");
       return response;
@@ -52,22 +54,39 @@ export const login = createAsyncThunk(
 );
 
 // ------------------ Logout ------------------
+// export const logout = createAsyncThunk(
+//   "auth/logout",
+//   async (_, { dispatch }) => {
+//     const storedUser = JSON.parse(localStorage.getItem("user"));
+//     if (storedUser?.user?._id || storedUser?._id) {
+//       const userId = storedUser.user?._id || storedUser._id;
+//       localStorage.removeItem(`cart_${userId}`);
+//     }
+
+//     localStorage.removeItem("user");
+//     localStorage.removeItem("token");
+
+//     dispatch(clearCart());
+//     dispatch(clearWishlist());
+
+//     toast.info("خروج انجام شد");
+//   }
+// );
 export const logout = createAsyncThunk(
   "auth/logout",
   async (_, { dispatch }) => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser?.user?._id || storedUser?._id) {
-      const userId = storedUser.user?._id || storedUser._id;
-      localStorage.removeItem(`cart_${userId}`);
-    }
-
+    // Remove only user session, not their cart/wishlist
     localStorage.removeItem("user");
     localStorage.removeItem("token");
 
+    // Clear Redux state
     dispatch(clearCart());
+    dispatch(clearWishlist());
+
     toast.info("خروج انجام شد");
   }
 );
+
 
 // ------------------ Initial State ------------------
 const initialState = {

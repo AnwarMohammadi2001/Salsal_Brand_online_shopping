@@ -4,6 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/slices/productSlice";
 import { addToCart } from "../../redux/slices/cartSlice";
 import { toast } from "react-hot-toast";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../redux/slices/wishlistSlice";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 
 // Skeleton loader for clean loading state
 const ProductDetailSkeleton = () => (
@@ -33,6 +38,8 @@ const ProductDetailsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { products, loading, error } = useSelector((state) => state.products);
+  const { items: wishlist } = useSelector((state) => state.wishlist);
+  const { user } = useSelector((state) => state.auth);
 
   const [product, setProduct] = useState(null);
   const [currentImage, setCurrentImage] = useState("");
@@ -81,6 +88,22 @@ const ProductDetailsPage = () => {
     product.backImage ? `http://localhost:5000/${product.backImage}` : null,
     ...(product.images || []),
   ].filter(Boolean);
+  // ✅ Toggle wishlist per product
+  const toggleWishlist = (e, product) => {
+    e.stopPropagation();
+
+    if (!user) {
+      alert("لطفاً ابتدا وارد حساب شوید.");
+      return;
+    }
+
+    if (isInWishlist) {
+      dispatch(removeFromWishlist(product._id));
+    } else {
+      dispatch(addToWishlist(product));
+    }
+  };
+  const isInWishlist = wishlist.some((item) => item._id === product._id);
 
   return (
     <div className="bg-white">
@@ -153,6 +176,16 @@ const ProductDetailsPage = () => {
                 </div>
               )}
             </div>
+            <button
+              onClick={(e) => toggleWishlist(e, product)}
+              className="cursor-pointer"
+            >
+              {isInWishlist ? (
+                <IoMdHeart size={20} className="text-pink-500" />
+              ) : (
+                <IoMdHeartEmpty size={20} className="text-gray-500" />
+              )}
+            </button>
 
             <div className="mt-8 flex gap-4">
               <button
