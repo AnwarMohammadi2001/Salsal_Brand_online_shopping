@@ -8,6 +8,7 @@ import SignIn from "../feature/authentication/SignIn";
 import SignUp from "../feature/authentication/SignUp";
 import ProductDetailsPage from "../components/Product/ProductDetailsPage"
 import ProductMainPage from "../components/Product/ProductMainPage";
+import WishList from "../pages/WishList";
 
 export default function AppRoutes() {
   return (
@@ -22,6 +23,7 @@ export default function AppRoutes() {
               path="/collections/:category/:productName"
               element={<ProductDetailsPage />}
             />
+            <Route path="/wishlist" element={<WishList />} />
           </Route>
 
           <Route path="/signin" element={<SignIn />} />

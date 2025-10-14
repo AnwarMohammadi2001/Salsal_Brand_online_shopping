@@ -3,7 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { FaShoppingBag } from "react-icons/fa";
-import { IoMdTrash } from "react-icons/io";
+import { BsPlus } from "react-icons/bs";
+import { IoMdHeartEmpty } from "react-icons/io";
+import { CiTrash } from "react-icons/ci";
+import { HiMinus } from "react-icons/hi2";
 import {
   removeFromCart,
   increaseQuantity,
@@ -49,13 +52,13 @@ const Drawer = ({ isDrawerOpens, setIsDrawerOpens }) => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed top-0 right-0 z-50 h-full w-96 bg-white shadow-lg p-6 flex flex-col"
+            className="fixed top-0 right-0 z-50 h-full w-[450px] bg-white shadow-lg p-6 flex flex-col"
           >
             {/* Header */}
             <div className="flex justify-between items-center border-b pb-4">
               <h2 className="text-xl font-bold">سبد خرید</h2>
               <button onClick={() => setIsDrawerOpens(false)}>
-                <IoClose size={26} className="text-amber-400" />
+                <IoClose size={26} className="" />
               </button>
             </div>
 
@@ -79,53 +82,75 @@ const Drawer = ({ isDrawerOpens, setIsDrawerOpens }) => {
                   return (
                     <div
                       key={item._id}
-                      className="flex justify-between items-center gap-x-5 border-b pb-2"
+                      className="flex justify-between  gap-x-5 border-b border-gray-200 pb-2"
                     >
                       {/* Product Image */}
-                      <div className="w-12 h-12 flex-shrink-0">
-                        <img
-                          src={FRONT_IMAGE_URL}
-                          alt={item.name}
-                          className="w-full h-full object-cover rounded"
-                          onMouseOver={(e) =>
-                            (e.currentTarget.src = BACK_IMAGE_URL)
-                          }
-                          onMouseOut={(e) =>
-                            (e.currentTarget.src = FRONT_IMAGE_URL)
-                          }
-                        />
-                      </div>
+                      <div className="flex items-center gap-x-4">
+                        <div className="w-16 h-20">
+                          <img
+                            src={FRONT_IMAGE_URL}
+                            alt={item.name}
+                            className="w-full h-full object-cover "
+                            onMouseOver={(e) =>
+                              (e.currentTarget.src = BACK_IMAGE_URL)
+                            }
+                            onMouseOut={(e) =>
+                              (e.currentTarget.src = FRONT_IMAGE_URL)
+                            }
+                          />
+                        </div>
 
-                      {/* Product Info */}
-                      <div className="flex-1 ml-3">
-                        <h3 className="font-semibold text-sm">{item.name}</h3>
-                        <p className="text-sm text-gray-600">
-                          {item.priceAFN} افغانی × {item.quantity} ={" "}
-                          {item.priceAFN * item.quantity} افغانی
-                        </p>
+                        {/* Product Info */}
+                        <div className=" ml-3">
+                          <h3 className="font-semibold text-sm">{item.name}</h3>
+                          <div>
+                            {item.attributes && item.attributes.length > 0 && (
+                              <div className="">
+                                <ul className="flex items-center gap-x-2 text-gray-500">
+                                  {item.attributes.map((attr) => (
+                                    <li key={attr._id}>{attr.value}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-600">
+                            {item.priceAFN} AF
+                          </p>
+                        </div>
                       </div>
 
                       {/* Actions */}
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => dispatch(decreaseQuantity(item._id))}
-                          className="px-2 bg-gray-200 rounded"
-                        >
-                          -
-                        </button>
-                        <span>{item.quantity}</span>
-                        <button
-                          onClick={() => dispatch(increaseQuantity(item._id))}
-                          className="px-2 bg-gray-200 rounded"
-                        >
-                          +
-                        </button>
-                        <button
-                          onClick={() => dispatch(removeFromCart(item._id))}
-                          className="px-2 text-red-500 rounded"
-                        >
-                          <IoMdTrash size={24} />
-                        </button>
+                      <div className="flex flex-col justify-between items-end">
+                        <div className="flex items-center   gap-x-4">
+                          <button
+                            onClick={() => dispatch(removeFromCart(item._id))}
+                            className=" text-red-500 rounded cursor-pointer"
+                          >
+                            <CiTrash size={20} />
+                          </button>
+                          <button className="cursor-pointer">
+                            <IoMdHeartEmpty
+                              size={20}
+                              className="text-gray-500"
+                            />
+                          </button>
+                        </div>
+                        <div className="flex items-center  text-gray-600 gap-x-4">
+                          <button
+                            onClick={() => dispatch(decreaseQuantity(item._id))}
+                            className=" rounded cursor-pointer"
+                          >
+                            <HiMinus size={20} />
+                          </button>
+                          <span>{item.quantity}</span>
+                          <button
+                            onClick={() => dispatch(increaseQuantity(item._id))}
+                            className=" rounded cursor-pointer"
+                          >
+                            <BsPlus size={24} />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   );
@@ -135,16 +160,22 @@ const Drawer = ({ isDrawerOpens, setIsDrawerOpens }) => {
 
             {/* Footer */}
             {cartItems.length > 0 && (
-              <div className="mt-auto border-t pt-4">
-                <p className="font-bold text-right mb-4">
-                  مجموع: {totalPrice} افغانی
-                </p>
-                <button
-                  onClick={() => dispatch(clearCart())}
-                  className="w-full bg-red-500 text-white font-semibold py-3 rounded-full mb-2 hover:opacity-90 transition"
-                >
-                  حذف همه محصولات
-                </button>
+              <div className="mt-auto border-t pt-4 spayce-y-4">
+                <div className="flex justify-between items-center pb-5 ">
+                  <p className="flex items-center gap-x-2  ">
+                    <span className="font-semibold text-lg">مجموع</span>:{" "}
+                    <span className="text-gray-500 text-sm">
+                      {totalPrice} AF
+                    </span>
+                  </p>
+                  <button
+                    onClick={() => dispatch(clearCart())}
+                    className="flex items-center gap-x-2 text-red-500 rounded cursor-pointer"
+                  >
+                    <span>حذف همه </span> :
+                    <CiTrash size={20} />
+                  </button>
+                </div>
                 <button className="w-full bg-black text-white font-semibold py-3 rounded-full hover:opacity-90 transition">
                   ادامه خرید
                 </button>

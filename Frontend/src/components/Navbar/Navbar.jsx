@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar";
 import { PiHeartStraight } from "react-icons/pi";
 import { LuUser } from "react-icons/lu";
 import { AiOutlineShopping } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { FiSearch } from "react-icons/fi";
 import MobileSearchBox from "./MobileSearchBox";
@@ -25,6 +25,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   const modalRef = useRef(null);
 
@@ -51,7 +53,6 @@ const Navbar = () => {
     dispatch(logout());
     setIsUserModalOpen(false);
     navigate("/");
-    localStorage.removeItem("user");
     window.dispatchEvent(new Event("userLoggedOut"));
   };
 
@@ -68,9 +69,14 @@ const Navbar = () => {
         <div className="grid grid-cols-3 items-center relative">
           {/* Left (Mobile): Menu & Search icons */}
           <div className="lg:hidden flex items-center gap-x-5 py-2">
-            <span onClick={() => setOpens(true)}>
+            <div onClick={() => setOpens(true)} className="relative">
               <HiOutlineMenuAlt2 size={24} className="cursor-pointer" />
-            </span>
+              {cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full">
+                  {cartItems.length}
+                </span>
+              )}
+            </div>
             <span onClick={handleSearchClick}>
               <FiSearch size={22} className="cursor-pointer" />
             </span>
@@ -95,9 +101,9 @@ const Navbar = () => {
             <div className="hidden lg:block">
               <SearchBar />
             </div>
-            <button className="text-amber-400 hidden md:block hover:text-amber-600 hover:-translate-y-1 transform transition-all duration-300">
+            <Link to="/wishlist" className="text-amber-400 hidden md:block hover:text-amber-600 hover:-translate-y-1 transform transition-all duration-300">
               <PiHeartStraight size={26} />
-            </button>
+            </Link>
 
             {/* User Icon / Initial */}
             <div className="relative">
@@ -162,9 +168,14 @@ const Navbar = () => {
 
             <button
               onClick={() => setIsDrawerOpens(true)}
-              className="text-amber-400 hover:text-amber-600 hover:-translate-y-1 transform transition-all duration-300"
+              className="text-amber-400 relative hover:text-amber-600 hover:-translate-y-1 transform transition-all duration-300"
             >
               <AiOutlineShopping size={26} />
+              {cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-gray-700 text-white text-xs  px-1.5 py-0.5 rounded-full">
+                  {cartItems.length}
+                </span>
+              )}
             </button>
           </div>
         </div>
