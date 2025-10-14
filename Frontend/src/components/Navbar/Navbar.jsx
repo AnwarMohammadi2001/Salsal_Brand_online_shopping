@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import Logo from "../../assets/Logo.png";
 import NavLinks from "./NavLinks";
 import SearchBar from "./SearchBar";
 import { PiHeartStraight } from "react-icons/pi";
