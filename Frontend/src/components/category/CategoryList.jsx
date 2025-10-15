@@ -60,7 +60,7 @@ const CategoryList = () => {
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white font-bold text-lg">
-                {item.category?.name || "بدون نام"}
+                {item.category?.nameEn || "بدون نام"}
               </div>
             </div>
           ))}

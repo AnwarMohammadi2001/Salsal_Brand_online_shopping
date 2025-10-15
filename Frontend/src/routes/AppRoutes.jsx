@@ -10,6 +10,7 @@ import ProductDetailsPage from "../components/Product/ProductDetailsPage"
 import ProductMainPage from "../components/Product/ProductMainPage";
 import WishList from "../pages/WishList";
 import FullPageCart from "../pages/FullPageCart";
+import About from "../pages/About";
 
 export default function AppRoutes() {
   return (
@@ -19,6 +20,7 @@ export default function AppRoutes() {
           {/* Public Routes */}
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
             <Route path="/collections" element={<ProductMainPage />} />
             <Route
               path="/collections/:category/:productName"
